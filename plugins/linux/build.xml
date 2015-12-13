@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="all" name="Linux Plugin">
+    <target name="init">
+        <mkdir dir="classes"/>
+        <mkdir dir="bin"/>
+        <condition property="linux" >
+            <!--<os family="unix" />-->
+            <os name="Linux" />
+        </condition>
+		
+    </target>
+
+    <target depends="init" name="compile">
+		<!--		<ant dir="src/native" target="createNativeDefinitions.java"/>-->
+        <javac debug="true" deprecation="true" destdir="classes" source="1.4" target="1.4" srcdir="src/java">
+            <classpath>
+				<pathelement location="../../coreAPI/bin/jinput-core.jar"/>
+                <pathelement location="../../lib/jutils.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target depends="init,compile" name="jar">
+        <jar jarfile="bin/linux.jar" compress="true" basedir="classes">
+            <include name="**/*.class"/>
+        </jar> 
+    </target>
+
+    <target depends="jar,compileNativeJinputLib" description="Build everything." name="all">
+    </target>
+
+    <target name="javadoc" depends="init" description="Javadoc for Linux plugin for JInput.">
+        <mkdir dir="apidocs"/>
+        <javadoc packagenames="net.java.games.input.*" 
+                 destdir="apidocs"
+                 additionalparam="-source 1.4"
+                 link="../../../coreAPI/apidocs">
+            <sourcepath>
+                <pathelement location="src/java"/>
+            </sourcepath>
+             <classpath>
+                <pathelement location="../../coreAPI/bin/jinput-core.jar"/>
+                <pathelement location="../../coreAPI/lib/jutils.jar"/>
+            </classpath>
+        </javadoc>
+    </target>
+
+    <target description="Clean all build products." name="clean">
+		<delete dir="classes" failonerror="no"/>
+		<delete dir="bin" failonerror="no"/>
+        <delete dir="apidocs" failonerror="no"/>
+		<ant inheritAll="false" antfile="src/native/build.xml" target="clean"/>
+    </target>
+
+    <target depends="init,compile" name="createJNIHeaders">
+		<javah destdir="src/native">
+            <classpath>
+                <pathelement location="classes"/>
+                <pathelement location="../../coreAPI/bin/jinput-core.jar"/>
+            </classpath>
+			<class name="net.java.games.input.LinuxEventDevice"/>
+			<class name="net.java.games.input.LinuxJoystickDevice"/>
+		</javah>
+    </target>
+    
+    <target depends="init,createJNIHeaders" name="compileNativeJinputLib" if="linux">
+        <ant dir="src/native" target="compileNativeJinputLib"/>
+        <copy todir="bin">
+ 	       <fileset dir="src/native" includes="libjinput-linux*.so"/>
+	   </copy>
+    </target>
+</project>

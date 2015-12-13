@@ -8,3 +8,6 @@ bin/
 classes/
 dist/
 eclipse_bin/
+
+.idea/
+out/
