@@ -1,3 +1,4 @@
+# WARNING: This is a work in progress, it is not complete
 # JInput
 Project: net.java.games.jinput
 Purpose: Open source game libraries

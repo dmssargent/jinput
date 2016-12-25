@@ -1,5 +1,9 @@
 rootProject.name = 'jinput'
 include 'core'
-include 'awt-plugin'
-include 'linux-plugin'
-
+include 'plugins'
+include 'plugins:awt'
+include 'plugins:common'
+include 'plugins:OSX'
+include 'plugins:linux'
+include 'plugins:windows'
+include 'plugins:wintab'

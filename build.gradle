@@ -1,18 +1,28 @@
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'java-library-distribution'
 
 group = 'net.java.jinput'
 version = '1.0.0'
 
 description = "JInput"
 
+distributions {
+    main {
+        baseName = 'jinput'
+    }
+}
+
+
 
 repositories {
      maven { url "http://repo.maven.apache.org/maven2" }
 }
+
 dependencies {
     compile group: 'net.java.jutils', name: 'jutils', version:'1.0.0'
     runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-linux'
     runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-windows'
     runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-osx'
+
+    //compile project(':core')
 }

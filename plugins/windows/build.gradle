@@ -1,0 +1,62 @@
+group 'net.java.jinput'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'c'
+
+
+
+model {
+    components {
+        libjinput_windows(NativeLibrarySpec) {
+            sources {
+                c.source.srcDirs 'src/main/native'
+                c.source.include '**/*.c'
+                
+
+            }
+
+            binaries {
+                all {
+                    cCompiler.args "-I${project(':plugins:common').projectDir}${File.separator}src${File.separator}main${File.separator}native"
+                    def javaInclude = "-I${System.properties.'java.home'}${File.separator}..${File.separator}include"
+                    cCompiler.args javaInclude
+                    cCompiler.args "${javaInclude}${File.separator}win32"
+                    String generated = "-I${buildDir}${File.separator}generated${File.separator}includes".replaceAll('\\\\', "\\\\")
+                    cCompiler.args generated
+                    println cCompiler.args
+                }
+            }
+        }
+    }
+}
+
+task javah {
+    inputs.file sourceSets.main.output.asFileTree.matching {
+       include "DummyWindow"
+    }
+
+    outputs.file "${buildDir}/generated/includes/net_java_games_input_DummyWindow.h"
+    doLast {
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_DummyWindow.h", classpath: "${buildDir}/classes/main")
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInputEffect.h", classpath: "${buildDir}/classes/main")
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInput.h", classpath: "${buildDir}/classes/main")
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInputDevice.h", classpath: "${buildDir}/classes/main")
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawInputEnvironmentPlugin.h", classpath: "${buildDir}/classes/main")
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawInputEventQueue.h", classpath: "${buildDir}/classes/main")
+        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawDevice.h", classpath: "${buildDir}/classes/main")
+    }
+}
+
+assemble.dependsOn javah
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'net.java.jutils:jutils:1.0.0'
+    compile project(':core')
+    compile project(':plugins:common')
+}

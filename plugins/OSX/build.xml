@@ -55,11 +55,11 @@
 		<delete dir="classes" failonerror="no"/>
 		<delete dir="bin" failonerror="no"/>
 		<delete dir="apidocs" failonerror="no"/>
-		<ant inheritAll="false" antfile="src/native/build.xml" target="clean"/>
+		<ant inheritAll="false" antfile="src/main/native/build.xml" target="clean"/>
     </target>
 
     <target depends="init,compile" name="createJNIHeaders">
-        <javah destdir="src/native">
+        <javah destdir="src/main/native">
             <classpath>
                 <pathelement path="${build}"/>
                 <pathelement location="../../coreAPI/classes"/>
@@ -74,7 +74,7 @@
     <target name="compileNativeJinputLib" depends="init,createJNIHeaders" if="macosx">
         <ant dir="src/native" target="compileNativeJinputLib"/>
 		<copy todir="${bin}">
-			<fileset dir="src/native" includes="*.jnilib"/>
+			<fileset dir="src/main/native" includes="*.jnilib"/>
 		</copy>
     </target>
 </project>

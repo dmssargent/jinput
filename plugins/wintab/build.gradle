@@ -1,0 +1,35 @@
+group 'net.java.jinput'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'c'
+
+model {
+    components {
+        libjinput_wintab(NativeLibrarySpec) {
+            sources {
+                c.source.srcDirs 'src/main/native'
+            }
+
+            binaries {
+                all {
+                    def javaInclude = "-I${System.properties.'java.home'}${File.separator}..${File.separator}include"
+                    cCompiler.args javaInclude
+                    cCompiler.args "${javaInclude}${File.separator}win32"
+                    println cCompiler.args
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'net.java.jutils:jutils:1.0.0'
+    compile project(':core')
+    compile project(':plugins:windows')
+}
