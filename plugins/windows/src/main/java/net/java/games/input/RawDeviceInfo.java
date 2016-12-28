@@ -55,6 +55,7 @@ abstract class RawDeviceInfo {
 
     public abstract long getHandle();
 
+    @Override
     public final boolean equals(Object other) {
         if (!(other instanceof RawDeviceInfo))
             return false;
@@ -63,6 +64,7 @@ abstract class RawDeviceInfo {
                 other_info.getUsagePage() == getUsagePage();
     }
 
+    @Override
     public final int hashCode() {
         return getUsage() ^ getUsagePage();
     }

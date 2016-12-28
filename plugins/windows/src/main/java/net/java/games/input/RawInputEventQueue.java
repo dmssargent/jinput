@@ -37,6 +37,9 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +55,7 @@ import java.util.Set;
 final class RawInputEventQueue {
     private final Object monitor = new Object();
 
-    private List devices;
+    private List<RawDevice> devices;
 
     private static void registerDevices(DummyWindow window, RawDeviceInfo[] devices) throws IOException {
         nRegisterDevices(0, window.getHwnd(), devices);
@@ -60,7 +63,7 @@ final class RawInputEventQueue {
 
     private static native void nRegisterDevices(int flags, long hwnd_addr, RawDeviceInfo[] devices) throws IOException;
 
-    public final void start(List devices) throws IOException {
+    public final void start(List<RawDevice> devices) throws IOException {
         this.devices = devices;
         QueueThread queue = new QueueThread();
         synchronized (monitor) {
@@ -77,9 +80,10 @@ final class RawInputEventQueue {
             throw queue.getException();
     }
 
+    @Nullable
+    @Contract(pure = true)
     private RawDevice lookupDevice(long handle) {
-        for (Object device1 : devices) {
-            RawDevice device = (RawDevice) device1;
+        for (RawDevice device : devices) {
             if (device.getHandle() == handle)
                 return device;
         }
@@ -112,11 +116,9 @@ final class RawInputEventQueue {
         private DummyWindow window;
         private IOException exception;
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//        public QueueThread() {
-//            setDaemon(true);
-//        }
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+        public QueueThread() {
+            setDaemon(true);
+        }
 
         public final boolean isInitialized() {
             return initialized;
@@ -126,6 +128,7 @@ final class RawInputEventQueue {
             return exception;
         }
 
+        @Override
         public final void run() {
             // We have to create the window in the (private) queue thread
             try {
@@ -139,10 +142,9 @@ final class RawInputEventQueue {
             }
             if (exception != null)
                 return;
-            Set<RawDeviceInfo> active_infos = new HashSet();
+            Set<RawDeviceInfo> active_infos = new HashSet<>();
             try {
-                for (Object device1 : devices) {
-                    RawDevice device = (RawDevice) device1;
+                for (RawDevice device : devices) {
                     active_infos.add(device.getInfo());
                 }
                 RawDeviceInfo[] active_infos_array = new RawDeviceInfo[active_infos.size()];

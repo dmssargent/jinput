@@ -53,7 +53,6 @@ final class IDirectInput {
     private final long idirectinput_address;
     private final DummyWindow window;
 
-
     public IDirectInput(DummyWindow window) throws IOException {
         this.window = window;
         this.idirectinput_address = createIDirectInput();
@@ -65,7 +64,6 @@ final class IDirectInput {
             throw e;
         }
     }
-
 
     private static native long createIDirectInput() throws IOException;
 
@@ -89,13 +87,12 @@ final class IDirectInput {
             IDirectInputDevice device = new IDirectInputDevice(window, address, instance_guid, product_guid, dev_type, dev_subtype, instance_name, product_name);
             devices.add(device);
         } catch (IOException e) {
-            DirectInputEnvironmentPlugin.logln("Failed to initialize device " + product_name + " because of: " + e);
+            ControllerEnvironment.logln("Failed to initialize device " + product_name + " because of: " + e);
         }
     }
 
     private void releaseDevices() {
-        for (Object device1 : devices) {
-            IDirectInputDevice device = (IDirectInputDevice) device1;
+        for (IDirectInputDevice device : devices) {
             device.release();
         }
     }

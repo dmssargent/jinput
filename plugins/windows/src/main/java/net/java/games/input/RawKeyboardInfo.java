@@ -49,7 +49,6 @@ import java.io.IOException;
 class RawKeyboardInfo extends RawDeviceInfo {
     private final RawDevice device;
 
-
     public RawKeyboardInfo(RawDevice device, int type, int sub_type, int keyboard_mode, int num_function_keys, int num_indicators, int num_keys_total) {
         this.device = device;
         int type1 = type;
@@ -60,19 +59,22 @@ class RawKeyboardInfo extends RawDeviceInfo {
         int num_keys_total1 = num_keys_total;
     }
 
-
+    @Override
     public final int getUsage() {
         return 6;
     }
 
+    @Override
     public final int getUsagePage() {
         return 1;
     }
 
+    @Override
     public final long getHandle() {
         return device.getHandle();
     }
 
+    @Override
     public final Controller createControllerFromDevice(RawDevice device, SetupAPIDevice setupapi_device) throws IOException {
         return new RawKeyboard(setupapi_device.getName(), device, new Controller[]{}, new Rumbler[]{});
     }

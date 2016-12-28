@@ -46,12 +46,10 @@ import java.io.IOException;
 final class DIComponent extends AbstractComponent {
     private final DIDeviceObject object;
 
-
     public DIComponent(Identifier identifier, DIDeviceObject object) {
         super(object.getName(), identifier);
         this.object = object;
     }
-
 
     public final boolean isRelative() {
         return object.isRelative();

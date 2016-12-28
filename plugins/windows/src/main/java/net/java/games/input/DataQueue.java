@@ -37,28 +37,32 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author elias
  * @version 1.0
  */
-final class DataQueue {
-    private final Object[] elements;
+final class DataQueue<T> {
+    private final T[] elements;
     private int position;
     private int limit;
 
-
-    public DataQueue(int size, Class element_type) {
-        this.elements = new Object[size];
-        for (int i = 0; i < elements.length; i++) {
+    public DataQueue(int size, Class<T> element_type) {
+        Object[] temp = new Object[size];
+        for (int i = 0; i < temp.length; i++) {
             try {
-                elements[i] = element_type.newInstance();
+                temp[i] = element_type.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         }
+        elements = (T[]) temp;
         clear();
     }
-
 
     private void clear() {
         position = 0;
@@ -73,12 +77,13 @@ final class DataQueue {
         return limit;
     }
 
-    private Object get(int index) {
+    private T get(int index) {
         assert index < limit;
         return elements[index];
     }
 
-    public final Object get() {
+    @Nullable
+    public final T get() {
         if (!hasRemaining())
             return null;
         return get(position++);
@@ -96,7 +101,7 @@ final class DataQueue {
     }
 
     private void swap(int index1, int index2) {
-        Object temp = elements[index1];
+        T temp = elements[index1];
         elements[index1] = elements[index2];
         elements[index2] = temp;
     }
@@ -118,7 +123,7 @@ final class DataQueue {
         this.position = position;
     }
 
-    public final Object[] getElements() {
+    public final T[] getElements() {
         return elements;
     }
 }

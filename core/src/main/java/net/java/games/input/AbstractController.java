@@ -37,6 +37,8 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -76,7 +78,7 @@ public abstract class AbstractController implements Controller {
     /**
      * Map from Component.Identifiers to Components
      */
-    private final Map<Component.Identifier, Component> id_to_components = new HashMap<>();
+    private final Map<Identifier, Component> id_to_components = new HashMap<>();
 
     @NotNull
     private EventQueue event_queue = new EventQueue(EVENT_QUEUE_DEPTH);
@@ -107,6 +109,8 @@ public abstract class AbstractController implements Controller {
      * The objects in the array are returned in order of assignment priority
      * (primary stick, secondary buttons, etc.).
      */
+    @Override
+    @Contract(pure = true)
     public final Controller[] getControllers() {
         return children;
     }
@@ -120,7 +124,9 @@ public abstract class AbstractController implements Controller {
      * The array returned is an empty array if this controller contains no components
      * (such as a logical grouping of child controllers).
      */
+    @Contract(pure = true)
     @NotNull
+    @Override
     public final Component[] getComponents() {
         return components;
     }
@@ -130,7 +136,8 @@ public abstract class AbstractController implements Controller {
      * if no component with the specified type could be found.
      */
     @NotNull
-    public final Component getComponent(Component.Identifier id) {
+    @Override
+    public final Component getComponent(Identifier id) {
         return id_to_components.get(id);
     }
 
@@ -138,6 +145,8 @@ public abstract class AbstractController implements Controller {
      * Returns the rumblers for sending feedback to this controller, or an
      * empty array if there are no rumblers on this controller.
      */
+    @Contract(pure = true)
+    @Override
     public final Rumbler[] getRumblers() {
         return rumblers;
     }
@@ -147,6 +156,7 @@ public abstract class AbstractController implements Controller {
      *
      * @return PortType.UNKNOWN by default, can be overridden
      */
+    @Override
     public PortType getPortType() {
         return PortType.UNKNOWN;
     }
@@ -156,6 +166,7 @@ public abstract class AbstractController implements Controller {
      *
      * @return 0 by default, can be overridden
      */
+    @Override
     public int getPortNumber() {
         return 0;
     }
@@ -163,6 +174,7 @@ public abstract class AbstractController implements Controller {
     /**
      * Returns a human-readable name for this Controller.
      */
+    @Override
     public final String getName() {
         return name;
     }
@@ -170,6 +182,7 @@ public abstract class AbstractController implements Controller {
     /**
      * Returns a non-localized string description of this controller.
      */
+    @Override
     public String toString() {
         return name;
     }
@@ -177,6 +190,7 @@ public abstract class AbstractController implements Controller {
     /**
      * Returns the type of the Controller.
      */
+    @Override
     public Type getType() {
         return Type.UNKNOWN;
     }
@@ -184,6 +198,7 @@ public abstract class AbstractController implements Controller {
     /**
      * Creates a new EventQueue. Events in old queue are lost.
      */
+    @Override
     public final void setEventQueueSize(int size) {
         try {
             setDeviceEventQueueSize(size);
@@ -200,6 +215,7 @@ public abstract class AbstractController implements Controller {
     }
 
     @NotNull
+    @Override
     public final EventQueue getEventQueue() {
         return event_queue;
     }
@@ -210,6 +226,7 @@ public abstract class AbstractController implements Controller {
     }
 
     /* poll() is synchronized to protect the static event */
+    @Override
     public synchronized boolean poll() {
         Component[] components = getComponents();
         try {

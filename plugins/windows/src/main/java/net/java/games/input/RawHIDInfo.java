@@ -52,29 +52,28 @@ class RawHIDInfo extends RawDeviceInfo {
     private final int page;
     private final int usage;
 
-
     public RawHIDInfo(RawDevice device, int vendor_id, int product_id, int version, int page, int usage) {
         this.device = device;
-        int vendor_id1 = vendor_id;
-        int product_id1 = product_id;
-        int version1 = version;
         this.page = page;
         this.usage = usage;
     }
 
-
+    @Override
     public final int getUsage() {
         return usage;
     }
 
+    @Override
     public final int getUsagePage() {
         return page;
     }
 
+    @Override
     public final long getHandle() {
         return device.getHandle();
     }
 
+    @Override
     public final Controller createControllerFromDevice(RawDevice device, SetupAPIDevice setupapi_device) throws IOException {
         return null;
     }

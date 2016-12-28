@@ -37,8 +37,15 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.Component.Identifier.Button;
+import net.java.games.input.Component.Identifier.Key;
+
 import java.io.IOException;
 import java.util.*;
+
+import static net.java.games.input.DirectInputEnvironmentPlugin.*;
 
 /**
  * Java wrapper for IDirectInputDevice
@@ -48,7 +55,7 @@ import java.util.*;
  * @version 1.0
  */
 final class IDirectInputDevice {
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI8DEVTYPE_DEVICE = 0x11;
+    public final static int DI8DEVTYPE_DEVICE = 0x11;
     public final static int DI8DEVTYPE_MOUSE = 0x12;
     public final static int DI8DEVTYPE_KEYBOARD = 0x13;
     public final static int DI8DEVTYPE_JOYSTICK = 0x14;
@@ -57,66 +64,66 @@ final class IDirectInputDevice {
     public final static int DI8DEVTYPE_FLIGHT = 0x17;
     public final static int DI8DEVTYPE_1STPERSON = 0x18;
     public final static int DIDFT_RELAXIS = 0x00000001;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_ABSAXIS = 0x00000002;
+    public final static int DIDFT_ABSAXIS = 0x00000002;
     public final static int DIDFT_AXIS = 0x00000003;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_PSHBUTTON = 0x00000004;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_TGLBUTTON = 0x00000008;
+    public final static int DIDFT_PSHBUTTON = 0x00000004;
+    public final static int DIDFT_TGLBUTTON = 0x00000008;
     public final static int DIDFT_BUTTON = 0x0000000C;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Unknown = 11;
+    public final static int GUID_Unknown = 11;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_ConstantForce = 12;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_RampForce = 13;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Square = 14;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Sine = 15;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Triangle = 16;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_SawtoothUp = 17;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_SawtoothDown = 18;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Spring = 19;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Damper = 20;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Inertia = 21;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_Friction = 22;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int GUID_CustomForce = 23;
+    public final static int GUID_ConstantForce = 12;
+    public final static int GUID_RampForce = 13;
+    public final static int GUID_Square = 14;
+    public final static int GUID_Sine = 15;
+    public final static int GUID_Triangle = 16;
+    public final static int GUID_SawtoothUp = 17;
+    public final static int GUID_SawtoothDown = 18;
+    public final static int GUID_Spring = 19;
+    public final static int GUID_Damper = 20;
+    public final static int GUID_Inertia = 21;
+    public final static int GUID_Friction = 22;
+    public final static int GUID_CustomForce = 23;
     public final static int DI_OK = 0x00000000;
     public final static int DI_DOWNLOADSKIPPED = 0x00000003;
     public final static int DI_EFFECTRESTARTED = 0x00000004;
     public final static int DI_TRUNCATED = 0x00000008;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI_SETTINGSNOTSAVED = 0x0000000B;
+    public final static int DI_SETTINGSNOTSAVED = 0x0000000B;
     public final static int DI_TRUNCATEDANDRESTARTED = 0x0000000C;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI_DEGREES = 100;
+    public final static int DI_DEGREES = 100;
     public final static int DI_FFNOMINALMAX = 10000;
     public final static int DIPROPRANGE_NOMIN = 0x80000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI8DEVTYPE_DEVICECTRL = 0x19;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI8DEVTYPE_SCREENPOINTER = 0x1A;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI8DEVTYPE_REMOTE = 0x1B;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI8DEVTYPE_SUPPLEMENTAL = 0x1C;
+    public final static int DI8DEVTYPE_DEVICECTRL = 0x19;
+    public final static int DI8DEVTYPE_SCREENPOINTER = 0x1A;
+    public final static int DI8DEVTYPE_REMOTE = 0x1B;
+    public final static int DI8DEVTYPE_SUPPLEMENTAL = 0x1C;
     public final static int DIPROPRANGE_NOMAX = 0x7FFFFFFF;
     private final static int GUID_XAxis = 1;
     private final static int GUID_YAxis = 2;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DISCL_NOWINKEY = 0x00000010;
+    public final static int DISCL_NOWINKEY = 0x00000010;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_ALL = 0x00000000;
+    public final static int DIDFT_ALL = 0x00000000;
     private final static int GUID_ZAxis = 3;
     private final static int GUID_RxAxis = 4;
     private final static int GUID_RyAxis = 5;
     private final static int GUID_RzAxis = 6;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_COLLECTION = 0x00000040;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_NODATA = 0x00000080;
+    public final static int DIDFT_COLLECTION = 0x00000040;
+    public final static int DIDFT_NODATA = 0x00000080;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_FFACTUATOR = 0x01000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_FFEFFECTTRIGGER = 0x02000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_OUTPUT = 0x10000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_VENDORDEFINED = 0x04000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_ALIAS = 0x08000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_OPTIONAL = 0x80000000;
+    public final static int DIDFT_FFACTUATOR = 0x01000000;
+    public final static int DIDFT_FFEFFECTTRIGGER = 0x02000000;
+    public final static int DIDFT_OUTPUT = 0x10000000;
+    public final static int DIDFT_VENDORDEFINED = 0x04000000;
+    public final static int DIDFT_ALIAS = 0x08000000;
+    public final static int DIDFT_OPTIONAL = 0x80000000;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDFT_NOCOLLECTION = 0x00FFFF00;
+    public final static int DIDFT_NOCOLLECTION = 0x00FFFF00;
     private final static int GUID_Slider = 7;
     private final static int GUID_Button = 8;
     private final static int GUID_Key = 9;
     private final static int GUID_POV = 10;
     private final static int DISCL_EXCLUSIVE = 0x00000001;
     private final static int DISCL_NONEXCLUSIVE = 0x00000002;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DISCL_FOREGROUND = 0x00000004;
+    public final static int DISCL_FOREGROUND = 0x00000004;
     private final static int DISCL_BACKGROUND = 0x00000008;
     private final static int DIDFT_POV = 0x00000010;
     private final static int DIDF_ABSAXIS = 0x00000001;
@@ -125,54 +132,54 @@ final class IDirectInputDevice {
     private final static int DI_PROPNOEFFECT = 0x00000001;
     private final static int DI_POLLEDDEVICE = 0x00000002;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_FFACTUATOR = 0x00000001;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_FFEFFECTTRIGGER = 0x00000002;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_POLLED = 0x00008000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_ASPECTPOSITION = 0x00000100;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_ASPECTVELOCITY = 0x00000200;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_ASPECTACCEL = 0x00000300;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_ASPECTFORCE = 0x00000400;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_ASPECTMASK = 0x00000F00;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIDOI_GUIDISUSAGE = 0x00010000;
+    public final static int DIDOI_FFACTUATOR = 0x00000001;
+    public final static int DIDOI_FFEFFECTTRIGGER = 0x00000002;
+    public final static int DIDOI_POLLED = 0x00008000;
+    public final static int DIDOI_ASPECTPOSITION = 0x00000100;
+    public final static int DIDOI_ASPECTVELOCITY = 0x00000200;
+    public final static int DIDOI_ASPECTACCEL = 0x00000300;
+    public final static int DIDOI_ASPECTFORCE = 0x00000400;
+    public final static int DIDOI_ASPECTMASK = 0x00000F00;
+    public final static int DIDOI_GUIDISUSAGE = 0x00010000;
     private final static int DI_BUFFEROVERFLOW = 0x00000001;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIERR_INPUTLOST = 0x8007001E;
+    public final static int DIERR_INPUTLOST = 0x8007001E;
     private final static int DIERR_NOTACQUIRED = 0x8007001C;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_CONDITION = 0x00000004;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_CUSTOMFORCE = 0x00000005;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_HARDWARE = 0x000000FF;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_FFATTACK = 0x00000200;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_FFFADE = 0x00000400;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_SATURATION = 0x00000800;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_POSNEGCOEFFICIENTS = 0x00001000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_POSNEGSATURATION = 0x00002000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_DEADBAND = 0x00004000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_STARTDELAY = 0x00008000;
+    public final static int DIEFT_CONDITION = 0x00000004;
+    public final static int DIEFT_CUSTOMFORCE = 0x00000005;
+    public final static int DIEFT_HARDWARE = 0x000000FF;
+    public final static int DIEFT_FFATTACK = 0x00000200;
+    public final static int DIEFT_FFFADE = 0x00000400;
+    public final static int DIEFT_SATURATION = 0x00000800;
+    public final static int DIEFT_POSNEGCOEFFICIENTS = 0x00001000;
+    public final static int DIEFT_POSNEGSATURATION = 0x00002000;
+    public final static int DIEFT_DEADBAND = 0x00004000;
+    public final static int DIEFT_STARTDELAY = 0x00008000;
     private final static int DIERR_OTHERAPPHASPRIO = 0x80070005;
     private final static int DIEFT_ALL = 0x00000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFF_POLAR = 0x00000020;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFF_SPHERICAL = 0x00000040;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_CONSTANTFORCE = 0x00000001;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFT_RAMPFORCE = 0x00000002;
+    public final static int DIEFF_POLAR = 0x00000020;
+    public final static int DIEFF_SPHERICAL = 0x00000040;
+    public final static int DIEFT_CONSTANTFORCE = 0x00000001;
+    public final static int DIEFT_RAMPFORCE = 0x00000002;
     private final static int DIEFT_PERIODIC = 0x00000003;
     private final static int DIEFF_OBJECTIDS = 0x00000001;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEFF_OBJECTOFFSETS = 0x00000002;
+    public final static int DIEFF_OBJECTOFFSETS = 0x00000002;
     private final static int DIEFF_CARTESIAN = 0x00000010;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_DURATION = 0x00000001;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_SAMPLEPERIOD = 0x00000002;
+    public final static int DIEP_DURATION = 0x00000001;
+    public final static int DIEP_SAMPLEPERIOD = 0x00000002;
     private final static int DIEP_GAIN = 0x00000004;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DI_SECONDS = 1000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_TRIGGERBUTTON = 0x00000008;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_TRIGGERREPEATINTERVAL = 0x00000010;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_AXES = 0x00000020;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_DIRECTION = 0x00000040;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_ENVELOPE = 0x00000080;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_TYPESPECIFICPARAMS = 0x00000100;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_STARTDELAY = 0x00000200;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_ALLPARAMS_DX5 = 0x000001FF;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_ALLPARAMS = 0x000003FF;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_START = 0x20000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_NORESTART = 0x40000000;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int DIEP_NODOWNLOAD = 0x80000000;
+    public final static int DI_SECONDS = 1000000;
+    public final static int DIEP_TRIGGERBUTTON = 0x00000008;
+    public final static int DIEP_TRIGGERREPEATINTERVAL = 0x00000010;
+    public final static int DIEP_AXES = 0x00000020;
+    public final static int DIEP_DIRECTION = 0x00000040;
+    public final static int DIEP_ENVELOPE = 0x00000080;
+    public final static int DIEP_TYPESPECIFICPARAMS = 0x00000100;
+    public final static int DIEP_STARTDELAY = 0x00000200;
+    public final static int DIEP_ALLPARAMS_DX5 = 0x000001FF;
+    public final static int DIEP_ALLPARAMS = 0x000003FF;
+    public final static int DIEP_START = 0x20000000;
+    public final static int DIEP_NORESTART = 0x40000000;
+    public final static int DIEP_NODOWNLOAD = 0x80000000;
     private final static int DIEB_NOTRIGGER = 0xFFFFFFFF;
     private final static int INFINITE = 0xFFFFFFFF;
     private final DummyWindow window;
@@ -185,7 +192,6 @@ final class IDirectInputDevice {
     private final int[] device_state;
     private final Map<DIDeviceObject, DIComponent> object_to_component = new HashMap<>();
     private final boolean axes_in_relative_mode;
-
 
     private boolean released;
     private DataQueue queue;
@@ -205,7 +211,7 @@ final class IDirectInputDevice {
             enumEffects();
             createRumblers();
         } catch (IOException e) {
-            DirectInputEnvironmentPlugin.logln("Failed to create rumblers: " + e.getMessage());
+            logln("Failed to create rumblers: " + e.getMessage());
         }
         /* Some DirectInput lamer-designer made the device state
          * axis mode be per-device not per-axis, so I'll just
@@ -218,8 +224,7 @@ final class IDirectInputDevice {
 		 */
         boolean all_relative = true;
         boolean has_axis = false;
-        for (Object object : objects) {
-            DIDeviceObject obj = (DIDeviceObject) object;
+        for (DIDeviceObject obj : objects) {
             if (obj.isAxis()) {
                 has_axis = true;
                 if (!obj.isRelative()) {
@@ -262,7 +267,7 @@ final class IDirectInputDevice {
 
     private static native int nGetDeadzoneProperty(long address, int object_id) throws IOException;
 
-    private static Component.Identifier.Key getKeyIdentifier(int key_instance) {
+    private static Key getKeyIdentifier(int key_instance) {
         return DIIdentifierMap.getKeyIdentifier(key_instance);
     }
 
@@ -280,15 +285,14 @@ final class IDirectInputDevice {
         return rumblers.toArray(new Rumbler[rumblers.size()]);
     }
 
-    private List createRumblers() throws IOException {
+    private List<Rumbler> createRumblers() throws IOException {
         DIDeviceObject x_axis = lookupObjectByGUID(GUID_XAxis);
 //		DIDeviceObject y_axis = lookupObjectByGUID(GUID_YAxis);
         if (x_axis == null/* || y_axis == null*/)
             return rumblers;
         DIDeviceObject[] axes = {x_axis/*, y_axis*/};
         long[] directions = {0/*, 0*/};
-        for (Object effect : effects) {
-            DIEffectInfo info = (DIEffectInfo) effect;
+        for (DIEffectInfo info : effects) {
             if ((info.getEffectType() & 0xff) == DIEFT_PERIODIC &&
                     (info.getDynamicParams() & DIEP_GAIN) != 0) {
                 rumblers.add(createPeriodicRumbler(axes, directions, info));
@@ -459,41 +463,41 @@ final class IDirectInputDevice {
 
     /* Called from native side from nEnumObjects */
     private void addObject(byte[] guid, int guid_type, int identifier, int type, int instance, int flags, String name) throws IOException {
-        Component.Identifier id = getIdentifier(guid_type, type, instance);
+        Identifier id = getIdentifier(guid_type, type, instance);
         int format_offset = current_format_offset++;
         DIDeviceObject obj = new DIDeviceObject(this, id, guid, guid_type, identifier, type, instance, flags, name, format_offset);
         objects.add(obj);
     }
 
-    private Component.Identifier.Button getNextButtonIdentifier() {
+    private Button getNextButtonIdentifier() {
         int button_id = button_counter++;
         return DIIdentifierMap.getButtonIdentifier(button_id);
     }
 
-    private Component.Identifier getIdentifier(int guid_type, int type, int instance) {
+    private Identifier getIdentifier(int guid_type, int type, int instance) {
         switch (guid_type) {
-            case IDirectInputDevice.GUID_XAxis:
-                return Component.Identifier.Axis.X;
-            case IDirectInputDevice.GUID_YAxis:
-                return Component.Identifier.Axis.Y;
-            case IDirectInputDevice.GUID_ZAxis:
-                return Component.Identifier.Axis.Z;
-            case IDirectInputDevice.GUID_RxAxis:
-                return Component.Identifier.Axis.RX;
-            case IDirectInputDevice.GUID_RyAxis:
-                return Component.Identifier.Axis.RY;
-            case IDirectInputDevice.GUID_RzAxis:
-                return Component.Identifier.Axis.RZ;
-            case IDirectInputDevice.GUID_Slider:
-                return Component.Identifier.Axis.SLIDER;
-            case IDirectInputDevice.GUID_POV:
-                return Component.Identifier.Axis.POV;
-            case IDirectInputDevice.GUID_Key:
+            case GUID_XAxis:
+                return Axis.X;
+            case GUID_YAxis:
+                return Axis.Y;
+            case GUID_ZAxis:
+                return Axis.Z;
+            case GUID_RxAxis:
+                return Axis.RX;
+            case GUID_RyAxis:
+                return Axis.RY;
+            case GUID_RzAxis:
+                return Axis.RZ;
+            case GUID_Slider:
+                return Axis.SLIDER;
+            case GUID_POV:
+                return Axis.POV;
+            case GUID_Key:
                 return getKeyIdentifier(instance);
-            case IDirectInputDevice.GUID_Button:
+            case GUID_Button:
                 return getNextButtonIdentifier();
             default:
-                return Component.Identifier.Axis.UNKNOWN;
+                return Axis.UNKNOWN;
         }
     }
 
@@ -503,7 +507,7 @@ final class IDirectInputDevice {
         int res = nSetBufferSize(address, size);
         if (res != DI_OK && res != DI_PROPNOEFFECT && res != DI_POLLEDDEVICE)
             throw new IOException("Failed to set buffer size (" + Integer.toHexString(res) + ")");
-        queue = new DataQueue(size, DIDeviceObjectData.class);
+        queue = new DataQueue<>(size, DIDeviceObjectData.class);
         queue.position(queue.limit());
         acquire();
     }
@@ -518,7 +522,7 @@ final class IDirectInputDevice {
     public synchronized final void release() {
         if (!released) {
             released = true;
-            for (Object rumbler : rumblers) {
+            for (Rumbler rumbler : rumblers) {
                 IDirectInputEffect effect = (IDirectInputEffect) rumbler;
                 effect.release();
             }
@@ -531,6 +535,7 @@ final class IDirectInputDevice {
             throw new IOException("Device is released");
     }
 
+    @Override
     protected void finalize() throws Throwable {
         super.finalize();
         release();

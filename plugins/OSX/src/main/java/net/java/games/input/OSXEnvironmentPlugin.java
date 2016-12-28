@@ -37,6 +37,9 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Button;
+import net.java.games.input.Controller.Type;
 import net.java.games.util.plugins.Plugin;
 
 import java.io.File;
@@ -90,7 +93,7 @@ public final class OSXEnvironmentPlugin extends ControllerEnvironment implements
      */
     private static void loadLibrary(final String lib_name) {
         AccessController.doPrivileged(
-                (PrivilegedAction) () -> {
+                (PrivilegedAction<Object>) () -> {
                     try {
                         String lib_path = System.getProperty("net.java.games.input.librarypath");
                         if (lib_path != null)
@@ -106,7 +109,7 @@ public final class OSXEnvironmentPlugin extends ControllerEnvironment implements
     }
 
     private static String getPrivilegedProperty(final String property, final String default_value) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property, default_value));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property, default_value));
     }
 
     private static boolean isMacOSXEqualsOrBetterThan(int major_required, int minor_required) {
@@ -130,16 +133,16 @@ public final class OSXEnvironmentPlugin extends ControllerEnvironment implements
     private static void addElements(OSXHIDQueue queue, List elements, List<OSXComponent> components, boolean map_mouse_buttons) throws IOException {
         for (Object element1 : elements) {
             OSXHIDElement element = (OSXHIDElement) element1;
-            Component.Identifier id = element.getIdentifier();
+            Identifier id = element.getIdentifier();
             if (id == null)
                 continue;
             if (map_mouse_buttons) {
-                if (id == Component.Identifier.Button._0) {
-                    id = Component.Identifier.Button.LEFT;
-                } else if (id == Component.Identifier.Button._1) {
-                    id = Component.Identifier.Button.RIGHT;
-                } else if (id == Component.Identifier.Button._2) {
-                    id = Component.Identifier.Button.MIDDLE;
+                if (id == Button._0) {
+                    id = Button.LEFT;
+                } else if (id == Button._1) {
+                    id = Button.RIGHT;
+                } else if (id == Button._2) {
+                    id = Button.MIDDLE;
                 }
             }
             OSXComponent component = new OSXComponent(id, element);
@@ -182,7 +185,7 @@ public final class OSXEnvironmentPlugin extends ControllerEnvironment implements
         }
     }
 
-    private static AbstractController createControllerFromDevice(OSXHIDDevice device, List elements, Controller.Type type) throws IOException {
+    private static AbstractController createControllerFromDevice(OSXHIDDevice device, List elements, Type type) throws IOException {
         List<OSXComponent> components = new ArrayList<>();
         OSXHIDQueue queue = device.createQueue(AbstractController.EVENT_QUEUE_DEPTH);
         try {
@@ -212,15 +215,15 @@ public final class OSXEnvironmentPlugin extends ControllerEnvironment implements
             if (keyboard != null)
                 controllers.add(keyboard);
         } else if (usage_pair.getUsagePage() == UsagePage.GENERIC_DESKTOP && usage_pair.getUsage() == GenericDesktopUsage.JOYSTICK) {
-            Controller joystick = createControllerFromDevice(device, elements, Controller.Type.STICK);
+            Controller joystick = createControllerFromDevice(device, elements, Type.STICK);
             if (joystick != null)
                 controllers.add(joystick);
         } else if (usage_pair.getUsagePage() == UsagePage.GENERIC_DESKTOP && usage_pair.getUsage() == GenericDesktopUsage.MULTI_AXIS_CONTROLLER) {
-            Controller multiaxis = createControllerFromDevice(device, elements, Controller.Type.STICK);
+            Controller multiaxis = createControllerFromDevice(device, elements, Type.STICK);
             if (multiaxis != null)
                 controllers.add(multiaxis);
         } else if (usage_pair.getUsagePage() == UsagePage.GENERIC_DESKTOP && usage_pair.getUsage() == GenericDesktopUsage.GAME_PAD) {
-            Controller game_pad = createControllerFromDevice(device, elements, Controller.Type.GAMEPAD);
+            Controller game_pad = createControllerFromDevice(device, elements, Type.GAMEPAD);
             if (game_pad != null)
                 controllers.add(game_pad);
         }

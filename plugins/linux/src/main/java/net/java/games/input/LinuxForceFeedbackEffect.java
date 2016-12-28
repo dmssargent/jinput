@@ -25,6 +25,8 @@
  */
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+
 import java.io.IOException;
 
 /**
@@ -36,12 +38,10 @@ abstract class LinuxForceFeedbackEffect implements Rumbler {
     private final WriteTask write_task = new WriteTask();
     private final UploadTask upload_task = new UploadTask();
 
-
     LinuxForceFeedbackEffect(LinuxEventDevice device) throws IOException {
         this.device = device;
         this.ff_id = upload_task.doUpload(-1, 0);
     }
-
 
     protected abstract int upload(int id, float intensity) throws IOException;
 
@@ -58,7 +58,7 @@ abstract class LinuxForceFeedbackEffect implements Rumbler {
                 write_task.write(0);
             }
         } catch (IOException e) {
-            LinuxEnvironmentPlugin.logln("Failed to rumble: " + e);
+            ControllerEnvironment.logln("Failed to rumble: " + e);
         }
     }
 
@@ -74,12 +74,11 @@ abstract class LinuxForceFeedbackEffect implements Rumbler {
         return null;
     }
 
-    public final Component.Identifier getAxisIdentifier() {
+    public final Identifier getAxisIdentifier() {
         return null;
     }
 
-
-    private final class UploadTask extends LinuxDeviceTask {
+    private final class UploadTask extends LinuxDeviceTask<Object> {
         private int id;
         private float intensity;
 
@@ -90,13 +89,14 @@ abstract class LinuxForceFeedbackEffect implements Rumbler {
             return this.id;
         }
 
+        @Override
         protected final Object execute() throws IOException {
             this.id = upload(id, intensity);
             return null;
         }
     }
 
-    private final class WriteTask extends LinuxDeviceTask {
+    private final class WriteTask extends LinuxDeviceTask<Object> {
         private int value;
 
         public final void write(int value) throws IOException {
@@ -104,10 +104,10 @@ abstract class LinuxForceFeedbackEffect implements Rumbler {
             LinuxEnvironmentPlugin.execute(this);
         }
 
+        @Override
         protected final Object execute() throws IOException {
             device.writeEvent(NativeDefinitions.EV_FF, ff_id, value);
             return null;
         }
     }
-
 }

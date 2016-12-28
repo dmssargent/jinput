@@ -20,9 +20,9 @@ repositories {
 
 dependencies {
     compile group: 'net.java.jutils', name: 'jutils', version:'1.0.0'
-    runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-linux'
+    //runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-linux'
     runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-windows'
-    runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-osx'
-
+    //runtime group: 'net.java.jinput', name: 'jinput-platform', version:'2.0.6', classifier:'natives-osx'
+    compile project(':plugins:windows')
     //compile project(':core')
 }

@@ -37,6 +37,10 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.Component.POV;
+
 import java.io.IOException;
 
 /**
@@ -57,7 +61,7 @@ final class DIDeviceObject {
     private final int guid_type;
     private final int flags;
     private final String name;
-    private final Component.Identifier id;
+    private final Identifier id;
     private final int format_offset;
     private final long min;
     private final long max;
@@ -67,8 +71,7 @@ final class DIDeviceObject {
     private int last_poll_value;
     private int last_event_value;
 
-
-    public DIDeviceObject(IDirectInputDevice device, Component.Identifier id, byte[] guid, int guid_type, int identifier, int type, int instance, int flags, String name, int format_offset) throws IOException {
+    public DIDeviceObject(IDirectInputDevice device, Identifier id, byte[] guid, int guid_type, int identifier, int type, int instance, int flags, String name, int format_offset) throws IOException {
         this.device = device;
         this.id = id;
         this.guid = guid;
@@ -90,7 +93,6 @@ final class DIDeviceObject {
             this.deadzone = 0;
         }
     }
-
 
     public final synchronized int getRelativePollValue(int current_abs_value) {
         if (device.areAxesRelative())
@@ -124,7 +126,7 @@ final class DIDeviceObject {
         return identifier;
     }
 
-    public final Component.Identifier getIdentifier() {
+    public final Identifier getIdentifier() {
         return id;
     }
 
@@ -173,38 +175,38 @@ final class DIDeviceObject {
     }
 
     public final boolean isAnalog() {
-        return isAxis() && id != Component.Identifier.Axis.POV;
+        return isAxis() && id != Axis.POV;
     }
 
     public final float convertValue(float value) {
-        if (getDevice().getType() == IDirectInputDevice.DI8DEVTYPE_MOUSE && id == Component.Identifier.Axis.Z) {
+        if (getDevice().getType() == IDirectInputDevice.DI8DEVTYPE_MOUSE && id == Axis.Z) {
             return value / WHEEL_SCALE;
         } else if (isButton()) {
             return (((int) value) & 0x80) != 0 ? 1 : 0;
-        } else if (id == Component.Identifier.Axis.POV) {
+        } else if (id == Axis.POV) {
             int int_value = (int) value;
             if ((int_value & 0xFFFF) == 0xFFFF)
-                return Component.POV.OFF;
+                return POV.OFF;
             // DirectInput returns POV directions in hundredths of degree clockwise from north
             int slice = 360 * 100 / 16;
             if (int_value >= 0 && int_value < slice)
-                return Component.POV.UP;
+                return POV.UP;
             else if (int_value < 3 * slice)
-                return Component.POV.UP_RIGHT;
+                return POV.UP_RIGHT;
             else if (int_value < 5 * slice)
-                return Component.POV.RIGHT;
+                return POV.RIGHT;
             else if (int_value < 7 * slice)
-                return Component.POV.DOWN_RIGHT;
+                return POV.DOWN_RIGHT;
             else if (int_value < 9 * slice)
-                return Component.POV.DOWN;
+                return POV.DOWN;
             else if (int_value < 11 * slice)
-                return Component.POV.DOWN_LEFT;
+                return POV.DOWN_LEFT;
             else if (int_value < 13 * slice)
-                return Component.POV.LEFT;
+                return POV.LEFT;
             else if (int_value < 15 * slice)
-                return Component.POV.UP_LEFT;
+                return POV.UP_LEFT;
             else
-                return Component.POV.UP;
+                return POV.UP;
         } else if (isAxis() && !isRelative()) {
             return 2 * (value - min) / (float) (max - min) - 1;
         } else

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2003 Jeremy Booth (jeremy@newdawnsoftware.com)
  * <p>
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +25,14 @@
  */
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.Controller.PortType;
+import net.java.games.input.Controller.Type;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +49,7 @@ final class LinuxEventDevice implements LinuxDevice {
     private final String name;
     private final LinuxInputID input_id;
     private final List components;
-    private final Controller.Type type;
+    private final Type type;
     /* Access to the key_states array could be synchronized, but
      * it doesn't hurt to have multiple threads read/write from/to it
      */
@@ -112,6 +120,7 @@ final class LinuxEventDevice implements LinuxDevice {
 
     private static native void nGetKeyStates(long fd, byte[] states) throws IOException;
 
+    @Contract(pure = true)
     private static boolean isBitSet(byte[] bits, int bit) {
         return (bits[bit / 8] & (1 << (bit % 8))) != 0;
     }
@@ -120,38 +129,40 @@ final class LinuxEventDevice implements LinuxDevice {
 
     private static native void nClose(long fd) throws IOException;
 
-    public final Controller.Type getType() {
+    @Contract(pure = true)
+    public final Type getType() {
         return type;
     }
 
-    private Controller.Type guessType() throws IOException {
-        Controller.Type type_from_usages = guessTypeFromUsages();
-        if (type_from_usages == Controller.Type.UNKNOWN)
+    private Type guessType() throws IOException {
+        Type type_from_usages = guessTypeFromUsages();
+        if (type_from_usages == Type.UNKNOWN)
             return guessTypeFromComponents();
         else
             return type_from_usages;
     }
 
-    private Controller.Type guessTypeFromUsages() throws IOException {
+    private Type guessTypeFromUsages() throws IOException {
         byte[] usage_bits = getDeviceUsageBits();
         if (isBitSet(usage_bits, NativeDefinitions.USAGE_MOUSE))
-            return Controller.Type.MOUSE;
+            return Type.MOUSE;
         else if (isBitSet(usage_bits, NativeDefinitions.USAGE_KEYBOARD))
-            return Controller.Type.KEYBOARD;
+            return Type.KEYBOARD;
         else if (isBitSet(usage_bits, NativeDefinitions.USAGE_GAMEPAD))
-            return Controller.Type.GAMEPAD;
+            return Type.GAMEPAD;
         else if (isBitSet(usage_bits, NativeDefinitions.USAGE_JOYSTICK))
-            return Controller.Type.STICK;
+            return Type.STICK;
         else
-            return Controller.Type.UNKNOWN;
+            return Type.UNKNOWN;
     }
 
-    private Controller.Type guessTypeFromComponents() throws IOException {
+    @Nullable
+    private Type guessTypeFromComponents() throws IOException {
         List components = getComponents();
         if (components.size() == 0)
-            return Controller.Type.UNKNOWN;
-        int num_rel_axes = countComponents(components, Component.Identifier.Axis.class, true);
-        int num_abs_axes = countComponents(components, Component.Identifier.Axis.class, false);
+            return Type.UNKNOWN;
+        int num_rel_axes = countComponents(components, Axis.class, true);
+        int num_abs_axes = countComponents(components, Axis.class, false);
         int mouse_traits = 0;
         int keyboard_traits = 0;
         int joystick_traits = 0;
@@ -171,13 +182,13 @@ final class LinuxEventDevice implements LinuxDevice {
         // count button traits
         for (Object component1 : components) {
             LinuxEventComponent component = (LinuxEventComponent) component1;
-            if (component.getButtonTrait() == Controller.Type.MOUSE)
+            if (component.getButtonTrait() == Type.MOUSE)
                 num_mouse_button_traits++;
-            else if (component.getButtonTrait() == Controller.Type.KEYBOARD)
+            else if (component.getButtonTrait() == Type.KEYBOARD)
                 num_keyboard_button_traits++;
-            else if (component.getButtonTrait() == Controller.Type.GAMEPAD)
+            else if (component.getButtonTrait() == Type.GAMEPAD)
                 num_gamepad_button_traits++;
-            else if (component.getButtonTrait() == Controller.Type.STICK)
+            else if (component.getButtonTrait() == Type.STICK)
                 num_joystick_button_traits++;
         }
         if ((num_mouse_button_traits >= num_keyboard_button_traits) && (num_mouse_button_traits >= num_joystick_button_traits) && (num_mouse_button_traits >= num_gamepad_button_traits)) {
@@ -198,17 +209,18 @@ final class LinuxEventDevice implements LinuxDevice {
         }
 
         if ((mouse_traits >= keyboard_traits) && (mouse_traits >= joystick_traits) && (mouse_traits >= gamepad_traits)) {
-            return Controller.Type.MOUSE;
+            return Type.MOUSE;
         } else if ((keyboard_traits >= mouse_traits) && (keyboard_traits >= joystick_traits) && (keyboard_traits >= gamepad_traits)) {
-            return Controller.Type.KEYBOARD;
+            return Type.KEYBOARD;
         } else if ((joystick_traits >= mouse_traits) && (joystick_traits >= keyboard_traits) && (joystick_traits >= gamepad_traits)) {
-            return Controller.Type.STICK;
+            return Type.STICK;
         } else if ((gamepad_traits >= mouse_traits) && (gamepad_traits >= keyboard_traits) && (gamepad_traits >= joystick_traits)) {
-            return Controller.Type.GAMEPAD;
+            return Type.GAMEPAD;
         } else
             return null;
     }
 
+    @NotNull
     private Rumbler[] enumerateRumblers() {
         List<LinuxRumbleFF> rumblers = new ArrayList<>();
         try {
@@ -220,11 +232,12 @@ final class LinuxEventDevice implements LinuxDevice {
                 rumblers.add(new LinuxRumbleFF(this));
             }
         } catch (IOException e) {
-            LinuxEnvironmentPlugin.logln("Failed to enumerate rumblers: " + e.getMessage());
+            ControllerEnvironment.logln("Failed to enumerate rumblers: " + e.getMessage());
         }
         return rumblers.toArray(new Rumbler[rumblers.size()]);
     }
 
+    @Contract(pure = true)
     public final Rumbler[] getRumblers() {
         return rumblers;
     }
@@ -256,10 +269,12 @@ final class LinuxEventDevice implements LinuxDevice {
         return component_map.get(desc);
     }
 
-    public final Controller.PortType getPortType() throws IOException {
+    @Contract(pure = true)
+    public final PortType getPortType() throws IOException {
         return input_id.getPortType();
     }
 
+    @Contract(pure = true)
     public final LinuxInputID getInputID() {
         return input_id;
     }
@@ -290,7 +305,7 @@ final class LinuxEventDevice implements LinuxDevice {
         byte[] bits = getKeysBits();
         for (int i = 0; i < bits.length * 8; i++) {
             if (isBitSet(bits, i)) {
-                Component.Identifier id = LinuxNativeTypesMap.getButtonID(i);
+                Identifier id = LinuxNativeTypesMap.getButtonID(i);
                 components.add(new LinuxEventComponent(this, id, false, NativeDefinitions.EV_KEY, i));
             }
         }
@@ -300,7 +315,7 @@ final class LinuxEventDevice implements LinuxDevice {
         byte[] bits = getAbsoluteAxesBits();
         for (int i = 0; i < bits.length * 8; i++) {
             if (isBitSet(bits, i)) {
-                Component.Identifier id = LinuxNativeTypesMap.getAbsAxisID(i);
+                Identifier id = LinuxNativeTypesMap.getAbsAxisID(i);
                 components.add(new LinuxEventComponent(this, id, false, NativeDefinitions.EV_ABS, i));
             }
         }
@@ -310,12 +325,13 @@ final class LinuxEventDevice implements LinuxDevice {
         byte[] bits = getRelativeAxesBits();
         for (int i = 0; i < bits.length * 8; i++) {
             if (isBitSet(bits, i)) {
-                Component.Identifier id = LinuxNativeTypesMap.getRelAxisID(i);
+                Identifier id = LinuxNativeTypesMap.getRelAxisID(i);
                 components.add(new LinuxEventComponent(this, id, true, NativeDefinitions.EV_REL, i));
             }
         }
     }
 
+    @Contract(pure = true)
     public final List getComponents() {
         return components;
     }
@@ -374,10 +390,12 @@ final class LinuxEventDevice implements LinuxDevice {
         nGetKeyStates(fd, key_states);
     }
 
+    @Contract(pure = true)
     public final boolean isKeySet(int bit) {
         return isBitSet(key_states, bit);
     }
 
+    @Contract(pure = true)
     public final String getName() {
         return name;
     }
@@ -386,11 +404,12 @@ final class LinuxEventDevice implements LinuxDevice {
         return nGetName(fd);
     }
 
+    @Override
     public synchronized final void close() throws IOException {
-        if (closed)
-            return;
+        if (closed) return;
         closed = true;
-        LinuxEnvironmentPlugin.execute(new LinuxDeviceTask() {
+        LinuxEnvironmentPlugin.execute(new LinuxDeviceTask<Object>() {
+            @Override
             protected final Object execute() throws IOException {
                 nClose(fd);
                 return null;
@@ -403,6 +422,7 @@ final class LinuxEventDevice implements LinuxDevice {
             throw new IOException("Device is closed");
     }
 
+    @Override
     protected void finalize() throws IOException {
         try {
             super.finalize();

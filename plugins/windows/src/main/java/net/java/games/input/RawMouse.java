@@ -73,12 +73,10 @@ final class RawMouse extends Mouse {
     private final RawMouseEvent current_event = new RawMouseEvent();
     private int event_state = EVENT_DONE;
 
-
     RawMouse(String name, RawDevice device, Component[] components, Controller[] children, Rumbler[] rumblers) throws IOException {
         super(name, components, children, rumblers);
         this.device = device;
     }
-
 
     private static boolean makeButtonEvent(RawMouseEvent mouse_event, Event event, Component button_component, int down_flag, int up_flag) {
         if ((mouse_event.getButtonFlags() & down_flag) != 0) {
@@ -91,10 +89,12 @@ final class RawMouse extends Mouse {
             return false;
     }
 
+    @Override
     public final void pollDevice() throws IOException {
         device.pollMouse();
     }
 
+    @Override
     protected final synchronized boolean getNextDeviceEvent(Event event) throws IOException {
         while (true) {
             switch (event_state) {
@@ -158,6 +158,7 @@ final class RawMouse extends Mouse {
         }
     }
 
+    @Override
     protected final void setDeviceEventQueueSize(int size) throws IOException {
         device.setBufferSize(size);
     }
@@ -170,14 +171,17 @@ final class RawMouse extends Mouse {
             this.device = device;
         }
 
+        @Override
         public final boolean isRelative() {
             return true;
         }
 
+        @Override
         public final boolean isAnalog() {
             return true;
         }
 
+        @Override
         protected final float poll() throws IOException {
             if (getIdentifier() == Identifier.Axis.X) {
                 return device.getRelativeX();
@@ -200,14 +204,17 @@ final class RawMouse extends Mouse {
             this.button_id = button_id;
         }
 
+        @Override
         protected final float poll() throws IOException {
             return device.getButtonState(button_id) ? 1 : 0;
         }
 
+        @Override
         public final boolean isAnalog() {
             return false;
         }
 
+        @Override
         public final boolean isRelative() {
             return false;
         }

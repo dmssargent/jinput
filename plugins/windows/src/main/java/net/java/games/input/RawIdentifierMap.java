@@ -37,18 +37,21 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Key;
+
 /**
  * @author elias
  * @version 1.0
  */
 final class RawIdentifierMap {
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_LBUTTON = 0x01;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_RBUTTON = 0x02;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_CANCEL = 0x03;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_MBUTTON = 0x04;    /* NOT contiguous with L & RBUTTON */
+    public final static int VK_LBUTTON = 0x01;
+    public final static int VK_RBUTTON = 0x02;
+    public final static int VK_CANCEL = 0x03;
+    public final static int VK_MBUTTON = 0x04;    /* NOT contiguous with L & RBUTTON */
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_XBUTTON1 = 0x05;    /* NOT contiguous with L & RBUTTON */
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_XBUTTON2 = 0x06;    /* NOT contiguous with L & RBUTTON */
+    public final static int VK_XBUTTON1 = 0x05;    /* NOT contiguous with L & RBUTTON */
+    public final static int VK_XBUTTON2 = 0x06;    /* NOT contiguous with L & RBUTTON */
 
 /*
  * 0x07 : unassigned
@@ -61,7 +64,7 @@ final class RawIdentifierMap {
  * 0x0A - 0x0B : reserved
  */
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_CLEAR = 0x0C;
+    public final static int VK_CLEAR = 0x0C;
     private final static int VK_RETURN = 0x0D;
 
     private final static int VK_SHIFT = 0x10;
@@ -71,19 +74,19 @@ final class RawIdentifierMap {
     private final static int VK_CAPITAL = 0x14;
 
     private final static int VK_KANA = 0x15;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_HANGEUL = 0x15;  /* old name - should be here for compatibility */
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_HANGUL = 0x15;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_JUNJA = 0x17;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_FINAL = 0x18;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_HANJA = 0x19;
+    public final static int VK_HANGEUL = 0x15;  /* old name - should be here for compatibility */
+    public final static int VK_HANGUL = 0x15;
+    public final static int VK_JUNJA = 0x17;
+    public final static int VK_FINAL = 0x18;
+    public final static int VK_HANJA = 0x19;
     private final static int VK_KANJI = 0x19;
 
     private final static int VK_ESCAPE = 0x1B;
 
     private final static int VK_CONVERT = 0x1C;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_NONCONVERT = 0x1D;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_ACCEPT = 0x1E;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_MODECHANGE = 0x1F;
+    public final static int VK_NONCONVERT = 0x1D;
+    public final static int VK_ACCEPT = 0x1E;
+    public final static int VK_MODECHANGE = 0x1F;
 
     private final static int VK_SPACE = 0x20;
     private final static int VK_PRIOR = 0x21;
@@ -94,13 +97,13 @@ final class RawIdentifierMap {
     private final static int VK_UP = 0x26;
     private final static int VK_RIGHT = 0x27;
     private final static int VK_DOWN = 0x28;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_SELECT = 0x29;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_PRINT = 0x2A;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_EXECUTE = 0x2B;
+    public final static int VK_SELECT = 0x29;
+    public final static int VK_PRINT = 0x2A;
+    public final static int VK_EXECUTE = 0x2B;
     private final static int VK_SNAPSHOT = 0x2C;
     private final static int VK_INSERT = 0x2D;
     private final static int VK_DELETE = 0x2E;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_HELP = 0x2F;
+    public final static int VK_HELP = 0x2F;
     /*
      * VK_0 - VK_9 are the same as ASCII '0' - '9' (0x30 - 0x39)
      * 0x40 : unassigned
@@ -184,15 +187,15 @@ final class RawIdentifierMap {
     private final static int VK_F13 = 0x7C;
     private final static int VK_F14 = 0x7D;
     private final static int VK_F15 = 0x7E;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F16 = 0x7F;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F17 = 0x80;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F18 = 0x81;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F19 = 0x82;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F20 = 0x83;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F21 = 0x84;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F22 = 0x85;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F23 = 0x86;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_F24 = 0x87;
+    public final static int VK_F16 = 0x7F;
+    public final static int VK_F17 = 0x80;
+    public final static int VK_F18 = 0x81;
+    public final static int VK_F19 = 0x82;
+    public final static int VK_F20 = 0x83;
+    public final static int VK_F21 = 0x84;
+    public final static int VK_F22 = 0x85;
+    public final static int VK_F23 = 0x86;
+    public final static int VK_F24 = 0x87;
 
 /*
  * 0x88 - 0x8F : unassigned;
@@ -205,16 +208,15 @@ final class RawIdentifierMap {
      * NEC PC-9800 kbd definitions
      */
     private final static int VK_OEM_NEC_EQUAL = 0x92;   // '=' key on numpad
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
+
 //    /*
 //     * Fujitsu/OASYS kbd definitions
 //     */
-//    public final static int VK_OEM_FJ_JISHO = 0x92;   // 'Dictionary' key
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_FJ_MASSHOU = 0x93;   // 'Unregister word' key
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_FJ_TOUROKU = 0x94;   // 'Register word' key
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_FJ_LOYA = 0x95;   // 'Left OYAYUBI' key
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_FJ_ROYA = 0x96;   // 'Right OYAYUBI' key
+    public final static int VK_OEM_FJ_JISHO = 0x92;   // 'Dictionary' key
+    public final static int VK_OEM_FJ_MASSHOU = 0x93;   // 'Unregister word' key
+    public final static int VK_OEM_FJ_TOUROKU = 0x94;   // 'Register word' key
+    public final static int VK_OEM_FJ_LOYA = 0x95;   // 'Left OYAYUBI' key
+    public final static int VK_OEM_FJ_ROYA = 0x96;   // 'Right OYAYUBI' key
 
 /*
  * 0x97 - 0x9F : unassigned
@@ -232,36 +234,36 @@ final class RawIdentifierMap {
     private final static int VK_LMENU = 0xA4;
     private final static int VK_RMENU = 0xA5;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_BACK = 0xA6;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_FORWARD = 0xA7;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_REFRESH = 0xA8;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_STOP = 0xA9;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_SEARCH = 0xAA;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_FAVORITES = 0xAB;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_BROWSER_HOME = 0xAC;
+    public final static int VK_BROWSER_BACK = 0xA6;
+    public final static int VK_BROWSER_FORWARD = 0xA7;
+    public final static int VK_BROWSER_REFRESH = 0xA8;
+    public final static int VK_BROWSER_STOP = 0xA9;
+    public final static int VK_BROWSER_SEARCH = 0xAA;
+    public final static int VK_BROWSER_FAVORITES = 0xAB;
+    public final static int VK_BROWSER_HOME = 0xAC;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_VOLUME_MUTE = 0xAD;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_VOLUME_DOWN = 0xAE;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_VOLUME_UP = 0xAF;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_MEDIA_NEXT_TRACK = 0xB0;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_MEDIA_PREV_TRACK = 0xB1;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_MEDIA_STOP = 0xB2;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_MEDIA_PLAY_PAUSE = 0xB3;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_LAUNCH_MAIL = 0xB4;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_LAUNCH_MEDIA_SELECT = 0xB5;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_LAUNCH_APP1 = 0xB6;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_LAUNCH_APP2 = 0xB7;
+    public final static int VK_VOLUME_MUTE = 0xAD;
+    public final static int VK_VOLUME_DOWN = 0xAE;
+    public final static int VK_VOLUME_UP = 0xAF;
+    public final static int VK_MEDIA_NEXT_TRACK = 0xB0;
+    public final static int VK_MEDIA_PREV_TRACK = 0xB1;
+    public final static int VK_MEDIA_STOP = 0xB2;
+    public final static int VK_MEDIA_PLAY_PAUSE = 0xB3;
+    public final static int VK_LAUNCH_MAIL = 0xB4;
+    public final static int VK_LAUNCH_MEDIA_SELECT = 0xB5;
+    public final static int VK_LAUNCH_APP1 = 0xB6;
+    public final static int VK_LAUNCH_APP2 = 0xB7;
 
 /*
  * 0xB8 - 0xB9 : reserved
  */
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_1 = 0xBA;   // ';:' for US
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_PLUS = 0xBB;   // '+' any country
+    public final static int VK_OEM_1 = 0xBA;   // ';:' for US
+    public final static int VK_OEM_PLUS = 0xBB;   // '+' any country
     private final static int VK_OEM_COMMA = 0xBC;   // ',' any country
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_MINUS = 0xBD;   // '-' any country
+    public final static int VK_OEM_MINUS = 0xBD;   // '-' any country
     private final static int VK_OEM_PERIOD = 0xBE;   // '.' any country
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_2 = 0xBF;   // '/?' for US
+    public final static int VK_OEM_2 = 0xBF;   // '/?' for US
     private final static int VK_OEM_3 = 0xC0;   // '`~' for US
 
 /*
@@ -273,10 +275,10 @@ final class RawIdentifierMap {
  */
 
     private final static int VK_OEM_4 = 0xDB;  //  '[{' for US
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_5 = 0xDC;  //  '\|' for US
+    public final static int VK_OEM_5 = 0xDC;  //  '\|' for US
     private final static int VK_OEM_6 = 0xDD;  //  ']}' for US
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_7 = 0xDE;  //  ''"' for US
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_8 = 0xDF;
+    public final static int VK_OEM_7 = 0xDE;  //  ''"' for US
+    public final static int VK_OEM_8 = 0xDF;
 
 /*
  * 0xE0 : reserved
@@ -286,271 +288,271 @@ final class RawIdentifierMap {
      * Various extended or enhanced keyboards
      */
     private final static int VK_OEM_AX = 0xE1;  //  'AX' key on Japanese AX kbd
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_102 = 0xE2;  //  "<>" or "\|" on RT 102-key kbd.
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_ICO_HELP = 0xE3;  //  Help key on ICO
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_ICO_00 = 0xE4;  //  00 key on ICO
+    public final static int VK_OEM_102 = 0xE2;  //  "<>" or "\|" on RT 102-key kbd.
+    public final static int VK_ICO_HELP = 0xE3;  //  Help key on ICO
+    public final static int VK_ICO_00 = 0xE4;  //  00 key on ICO
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_PROCESSKEY = 0xE5;
+    public final static int VK_PROCESSKEY = 0xE5;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_ICO_CLEAR = 0xE6;
+    public final static int VK_ICO_CLEAR = 0xE6;
 
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_PACKET = 0xE7;
+    public final static int VK_PACKET = 0xE7;
 
 /*
  * 0xE8 : unassigned
  */
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
+
 //    /*
 //     * Nokia/Ericsson definitions
 //     */
 //    public final static int VK_OEM_RESET = 0xE9;
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_JUMP = 0xEA;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_PA1 = 0xEB;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_PA2 = 0xEC;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_PA3 = 0xED;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_WSCTRL = 0xEE;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_CUSEL = 0xEF;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_ATTN = 0xF0;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_FINISH = 0xF1;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_COPY = 0xF2;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_AUTO = 0xF3;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_ENLW = 0xF4;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_BACKTAB = 0xF5;
 
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_ATTN = 0xF6;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_CRSEL = 0xF7;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_EXSEL = 0xF8;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_EREOF = 0xF9;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_PLAY = 0xFA;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_ZOOM = 0xFB;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_NONAME = 0xFC;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_PA1 = 0xFD;
-    // --Commented out by Inspection (11/29/2015 12:48 AM):public final static int VK_OEM_CLEAR = 0xFE;
+    public final static int VK_OEM_JUMP = 0xEA;
+    public final static int VK_OEM_PA1 = 0xEB;
+    public final static int VK_OEM_PA2 = 0xEC;
+    public final static int VK_OEM_PA3 = 0xED;
+    public final static int VK_OEM_WSCTRL = 0xEE;
+    public final static int VK_OEM_CUSEL = 0xEF;
+    public final static int VK_OEM_ATTN = 0xF0;
+    public final static int VK_OEM_FINISH = 0xF1;
+    public final static int VK_OEM_COPY = 0xF2;
+    public final static int VK_OEM_AUTO = 0xF3;
+    public final static int VK_OEM_ENLW = 0xF4;
+    public final static int VK_OEM_BACKTAB = 0xF5;
 
-    public static Component.Identifier.Key mapVKey(int vkey) {
+    public final static int VK_ATTN = 0xF6;
+    public final static int VK_CRSEL = 0xF7;
+    public final static int VK_EXSEL = 0xF8;
+    public final static int VK_EREOF = 0xF9;
+    public final static int VK_PLAY = 0xFA;
+    public final static int VK_ZOOM = 0xFB;
+    public final static int VK_NONAME = 0xFC;
+    public final static int VK_PA1 = 0xFD;
+    public final static int VK_OEM_CLEAR = 0xFE;
+
+    public static Key mapVKey(int vkey) {
         switch (vkey) {
             case VK_ESCAPE:
-                return Component.Identifier.Key.ESCAPE;
+                return Key.ESCAPE;
             case VK_1:
-                return Component.Identifier.Key._1;
+                return Key._1;
             case VK_2:
-                return Component.Identifier.Key._2;
+                return Key._2;
             case VK_3:
-                return Component.Identifier.Key._3;
+                return Key._3;
             case VK_4:
-                return Component.Identifier.Key._4;
+                return Key._4;
             case VK_5:
-                return Component.Identifier.Key._5;
+                return Key._5;
             case VK_6:
-                return Component.Identifier.Key._6;
+                return Key._6;
             case VK_7:
-                return Component.Identifier.Key._7;
+                return Key._7;
             case VK_8:
-                return Component.Identifier.Key._8;
+                return Key._8;
             case VK_9:
-                return Component.Identifier.Key._9;
+                return Key._9;
             case VK_0:
-                return Component.Identifier.Key._0;
+                return Key._0;
             case VK_OEM_NEC_EQUAL:
-                return Component.Identifier.Key.NUMPADEQUAL;
+                return Key.NUMPADEQUAL;
             case VK_BACK:
-                return Component.Identifier.Key.BACK;
+                return Key.BACK;
             case VK_TAB:
-                return Component.Identifier.Key.TAB;
+                return Key.TAB;
             case VK_Q:
-                return Component.Identifier.Key.Q;
+                return Key.Q;
             case VK_W:
-                return Component.Identifier.Key.W;
+                return Key.W;
             case VK_E:
-                return Component.Identifier.Key.E;
+                return Key.E;
             case VK_R:
-                return Component.Identifier.Key.R;
+                return Key.R;
             case VK_T:
-                return Component.Identifier.Key.T;
+                return Key.T;
             case VK_Y:
-                return Component.Identifier.Key.Y;
+                return Key.Y;
             case VK_U:
-                return Component.Identifier.Key.U;
+                return Key.U;
             case VK_I:
-                return Component.Identifier.Key.I;
+                return Key.I;
             case VK_O:
-                return Component.Identifier.Key.O;
+                return Key.O;
             case VK_P:
-                return Component.Identifier.Key.P;
+                return Key.P;
             case VK_OEM_4:
-                return Component.Identifier.Key.LBRACKET;
+                return Key.LBRACKET;
             case VK_OEM_6:
-                return Component.Identifier.Key.RBRACKET;
+                return Key.RBRACKET;
             case VK_RETURN:
-                return Component.Identifier.Key.RETURN;
+                return Key.RETURN;
             case VK_CONTROL:
             case VK_LCONTROL:
-                return Component.Identifier.Key.LCONTROL;
+                return Key.LCONTROL;
             case VK_A:
-                return Component.Identifier.Key.A;
+                return Key.A;
             case VK_S:
-                return Component.Identifier.Key.S;
+                return Key.S;
             case VK_D:
-                return Component.Identifier.Key.D;
+                return Key.D;
             case VK_F:
-                return Component.Identifier.Key.F;
+                return Key.F;
             case VK_G:
-                return Component.Identifier.Key.G;
+                return Key.G;
             case VK_H:
-                return Component.Identifier.Key.H;
+                return Key.H;
             case VK_J:
-                return Component.Identifier.Key.J;
+                return Key.J;
             case VK_K:
-                return Component.Identifier.Key.K;
+                return Key.K;
             case VK_L:
-                return Component.Identifier.Key.L;
+                return Key.L;
             case VK_OEM_3:
-                return Component.Identifier.Key.GRAVE;
+                return Key.GRAVE;
             case VK_SHIFT:
             case VK_LSHIFT:
-                return Component.Identifier.Key.LSHIFT;
+                return Key.LSHIFT;
             case VK_Z:
-                return Component.Identifier.Key.Z;
+                return Key.Z;
             case VK_X:
-                return Component.Identifier.Key.X;
+                return Key.X;
             case VK_C:
-                return Component.Identifier.Key.C;
+                return Key.C;
             case VK_V:
-                return Component.Identifier.Key.V;
+                return Key.V;
             case VK_B:
-                return Component.Identifier.Key.B;
+                return Key.B;
             case VK_N:
-                return Component.Identifier.Key.N;
+                return Key.N;
             case VK_M:
-                return Component.Identifier.Key.M;
+                return Key.M;
             case VK_OEM_COMMA:
-                return Component.Identifier.Key.COMMA;
+                return Key.COMMA;
             case VK_OEM_PERIOD:
-                return Component.Identifier.Key.PERIOD;
+                return Key.PERIOD;
             case VK_RSHIFT:
-                return Component.Identifier.Key.RSHIFT;
+                return Key.RSHIFT;
             case VK_MULTIPLY:
-                return Component.Identifier.Key.MULTIPLY;
+                return Key.MULTIPLY;
             case VK_MENU:
             case VK_LMENU:
-                return Component.Identifier.Key.LALT;
+                return Key.LALT;
             case VK_SPACE:
-                return Component.Identifier.Key.SPACE;
+                return Key.SPACE;
             case VK_CAPITAL:
-                return Component.Identifier.Key.CAPITAL;
+                return Key.CAPITAL;
             case VK_F1:
-                return Component.Identifier.Key.F1;
+                return Key.F1;
             case VK_F2:
-                return Component.Identifier.Key.F2;
+                return Key.F2;
             case VK_F3:
-                return Component.Identifier.Key.F3;
+                return Key.F3;
             case VK_F4:
-                return Component.Identifier.Key.F4;
+                return Key.F4;
             case VK_F5:
-                return Component.Identifier.Key.F5;
+                return Key.F5;
             case VK_F6:
-                return Component.Identifier.Key.F6;
+                return Key.F6;
             case VK_F7:
-                return Component.Identifier.Key.F7;
+                return Key.F7;
             case VK_F8:
-                return Component.Identifier.Key.F8;
+                return Key.F8;
             case VK_F9:
-                return Component.Identifier.Key.F9;
+                return Key.F9;
             case VK_F10:
-                return Component.Identifier.Key.F10;
+                return Key.F10;
             case VK_NUMLOCK:
-                return Component.Identifier.Key.NUMLOCK;
+                return Key.NUMLOCK;
             case VK_SCROLL:
-                return Component.Identifier.Key.SCROLL;
+                return Key.SCROLL;
             case VK_NUMPAD7:
-                return Component.Identifier.Key.NUMPAD7;
+                return Key.NUMPAD7;
             case VK_NUMPAD8:
-                return Component.Identifier.Key.NUMPAD8;
+                return Key.NUMPAD8;
             case VK_NUMPAD9:
-                return Component.Identifier.Key.NUMPAD9;
+                return Key.NUMPAD9;
             case VK_SUBTRACT:
-                return Component.Identifier.Key.SUBTRACT;
+                return Key.SUBTRACT;
             case VK_NUMPAD4:
-                return Component.Identifier.Key.NUMPAD4;
+                return Key.NUMPAD4;
             case VK_NUMPAD5:
-                return Component.Identifier.Key.NUMPAD5;
+                return Key.NUMPAD5;
             case VK_NUMPAD6:
-                return Component.Identifier.Key.NUMPAD6;
+                return Key.NUMPAD6;
             case VK_ADD:
-                return Component.Identifier.Key.ADD;
+                return Key.ADD;
             case VK_NUMPAD1:
-                return Component.Identifier.Key.NUMPAD1;
+                return Key.NUMPAD1;
             case VK_NUMPAD2:
-                return Component.Identifier.Key.NUMPAD2;
+                return Key.NUMPAD2;
             case VK_NUMPAD3:
-                return Component.Identifier.Key.NUMPAD3;
+                return Key.NUMPAD3;
             case VK_NUMPAD0:
-                return Component.Identifier.Key.NUMPAD0;
+                return Key.NUMPAD0;
             case VK_DECIMAL:
-                return Component.Identifier.Key.DECIMAL;
+                return Key.DECIMAL;
             case VK_F11:
-                return Component.Identifier.Key.F11;
+                return Key.F11;
             case VK_F12:
-                return Component.Identifier.Key.F12;
+                return Key.F12;
             case VK_F13:
-                return Component.Identifier.Key.F13;
+                return Key.F13;
             case VK_F14:
-                return Component.Identifier.Key.F14;
+                return Key.F14;
             case VK_F15:
-                return Component.Identifier.Key.F15;
+                return Key.F15;
             case VK_KANA:
-                return Component.Identifier.Key.KANA;
+                return Key.KANA;
             case VK_CONVERT:
-                return Component.Identifier.Key.CONVERT;
+                return Key.CONVERT;
             case VK_KANJI:
-                return Component.Identifier.Key.KANJI;
+                return Key.KANJI;
             case VK_OEM_AX:
-                return Component.Identifier.Key.AX;
+                return Key.AX;
             case VK_RCONTROL:
-                return Component.Identifier.Key.RCONTROL;
+                return Key.RCONTROL;
             case VK_SEPARATOR:
-                return Component.Identifier.Key.NUMPADCOMMA;
+                return Key.NUMPADCOMMA;
             case VK_DIVIDE:
-                return Component.Identifier.Key.DIVIDE;
+                return Key.DIVIDE;
             case VK_SNAPSHOT:
-                return Component.Identifier.Key.SYSRQ;
+                return Key.SYSRQ;
             case VK_RMENU:
-                return Component.Identifier.Key.RALT;
+                return Key.RALT;
             case VK_PAUSE:
-                return Component.Identifier.Key.PAUSE;
+                return Key.PAUSE;
             case VK_HOME:
-                return Component.Identifier.Key.HOME;
+                return Key.HOME;
             case VK_UP:
-                return Component.Identifier.Key.UP;
+                return Key.UP;
             case VK_PRIOR:
-                return Component.Identifier.Key.PAGEUP;
+                return Key.PAGEUP;
             case VK_LEFT:
-                return Component.Identifier.Key.LEFT;
+                return Key.LEFT;
             case VK_RIGHT:
-                return Component.Identifier.Key.RIGHT;
+                return Key.RIGHT;
             case VK_END:
-                return Component.Identifier.Key.END;
+                return Key.END;
             case VK_DOWN:
-                return Component.Identifier.Key.DOWN;
+                return Key.DOWN;
             case VK_NEXT:
-                return Component.Identifier.Key.PAGEDOWN;
+                return Key.PAGEDOWN;
             case VK_INSERT:
-                return Component.Identifier.Key.INSERT;
+                return Key.INSERT;
             case VK_DELETE:
-                return Component.Identifier.Key.DELETE;
+                return Key.DELETE;
             case VK_LWIN:
-                return Component.Identifier.Key.LWIN;
+                return Key.LWIN;
             case VK_RWIN:
-                return Component.Identifier.Key.RWIN;
+                return Key.RWIN;
             case VK_APPS:
-                return Component.Identifier.Key.APPS;
+                return Key.APPS;
             case VK_SLEEP:
-                return Component.Identifier.Key.SLEEP;
+                return Key.SLEEP;
             default:
-                return Component.Identifier.Key.UNKNOWN;
+                return Key.UNKNOWN;
         }
     }
 }

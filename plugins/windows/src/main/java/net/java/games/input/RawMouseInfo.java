@@ -37,6 +37,10 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.RawMouse.Button;
+
 import java.io.IOException;
 
 /**
@@ -49,39 +53,39 @@ class RawMouseInfo extends RawDeviceInfo {
     private final RawDevice device;
     private final int num_buttons;
 
-
     public RawMouseInfo(RawDevice device, int id, int num_buttons, int sample_rate) {
         this.device = device;
-        int id1 = id;
         this.num_buttons = num_buttons;
-        int sample_rate1 = sample_rate;
     }
 
-
+    @Override
     public final int getUsage() {
         return 2;
     }
 
+    @Override
     public final int getUsagePage() {
         return 1;
     }
 
+    @Override
     public final long getHandle() {
         return device.getHandle();
     }
 
+    @Override
     public final Controller createControllerFromDevice(RawDevice device, SetupAPIDevice setupapi_device) throws IOException {
         if (num_buttons == 0)
             return null;
         // A raw mouse contains the x and y and z axis and the buttons
         Component[] components = new Component[3 + num_buttons];
         int index = 0;
-        components[index++] = new RawMouse.Axis(device, Component.Identifier.Axis.X);
-        components[index++] = new RawMouse.Axis(device, Component.Identifier.Axis.Y);
-        components[index++] = new RawMouse.Axis(device, Component.Identifier.Axis.Z);
+        components[index++] = new RawMouse.Axis(device, Axis.X);
+        components[index++] = new RawMouse.Axis(device, Axis.Y);
+        components[index++] = new RawMouse.Axis(device, Axis.Z);
         for (int i = 0; i < num_buttons; i++) {
-            Component.Identifier.Button id = DIIdentifierMap.mapMouseButtonIdentifier(DIIdentifierMap.getButtonIdentifier(i));
-            components[index++] = new RawMouse.Button(device, id, i);
+            Identifier.Button id = DIIdentifierMap.mapMouseButtonIdentifier(DIIdentifierMap.getButtonIdentifier(i));
+            components[index++] = new Button(device, id, i);
 
         }
         return new RawMouse(setupapi_device.getName(), device, components, new Controller[]{}, new Rumbler[]{});

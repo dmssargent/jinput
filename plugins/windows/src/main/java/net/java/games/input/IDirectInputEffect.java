@@ -37,6 +37,8 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+
 import java.io.IOException;
 
 /**
@@ -49,12 +51,10 @@ final class IDirectInputEffect implements Rumbler {
     private final long address;
     private boolean released;
 
-
     public IDirectInputEffect(long address, DIEffectInfo info) {
         this.address = address;
         DIEffectInfo info1 = info;
     }
-
 
     private static native void nRelease(long address);
 
@@ -74,14 +74,16 @@ final class IDirectInputEffect implements Rumbler {
             } else
                 stop();
         } catch (IOException e) {
-            DirectInputEnvironmentPlugin.logln("Failed to set rumbler gain: " + e.getMessage());
+            ControllerEnvironment.logln("Failed to set rumbler gain: " + e.getMessage());
         }
     }
 
-    public final Component.Identifier getAxisIdentifier() {
+    @Override
+    public final Identifier getAxisIdentifier() {
         return null;
     }
 
+    @Override
     public final String getAxisName() {
         return null;
     }
@@ -121,6 +123,7 @@ final class IDirectInputEffect implements Rumbler {
             throw new IOException("Failed to stop effect (0x" + Integer.toHexString(res) + ")");
     }
 
+    @Override
     protected void finalize() {
         try {
             super.finalize();

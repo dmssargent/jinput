@@ -25,6 +25,8 @@
  */
 package net.java.games.input;
 
+import net.java.games.input.Controller.Type;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +37,11 @@ import java.util.List;
  *
  * @author Jeremy
  */
+@SuppressWarnings("unused")
 public class DirectAndRawInputEnvironmentPlugin extends ControllerEnvironment {
-
     private final RawInputEnvironmentPlugin rawPlugin;
     private final DirectInputEnvironmentPlugin dinputPlugin;
     private Controller[] controllers = null;
-
 
     public DirectAndRawInputEnvironmentPlugin() {
         // These two *must* be loaded in this order for raw devices to work.
@@ -48,10 +49,10 @@ public class DirectAndRawInputEnvironmentPlugin extends ControllerEnvironment {
         rawPlugin = new RawInputEnvironmentPlugin();
     }
 
-
     /**
      * @see ControllerEnvironment#getControllers()
      */
+    @Override
     public Controller[] getControllers() {
         if (controllers == null) {
             boolean rawKeyboardFound = false;
@@ -61,18 +62,18 @@ public class DirectAndRawInputEnvironmentPlugin extends ControllerEnvironment {
             Controller[] rawControllers = rawPlugin.getControllers();
             for (Controller rawController : rawControllers) {
                 tempControllers.add(rawController);
-                if (rawController.getType() == Controller.Type.KEYBOARD) {
+                if (rawController.getType() == Type.KEYBOARD) {
                     rawKeyboardFound = true;
-                } else if (rawController.getType() == Controller.Type.MOUSE) {
+                } else if (rawController.getType() == Type.MOUSE) {
                     rawMouseFound = true;
                 }
             }
             for (Controller dinputController : dinputControllers) {
-                if (dinputController.getType() == Controller.Type.KEYBOARD) {
+                if (dinputController.getType() == Type.KEYBOARD) {
                     if (!rawKeyboardFound) {
                         tempControllers.add(dinputController);
                     }
-                } else if (dinputController.getType() == Controller.Type.MOUSE) {
+                } else if (dinputController.getType() == Type.MOUSE) {
                     if (!rawMouseFound) {
                         tempControllers.add(dinputController);
                     }
@@ -90,8 +91,8 @@ public class DirectAndRawInputEnvironmentPlugin extends ControllerEnvironment {
     /**
      * @see ControllerEnvironment#isSupported()
      */
+    @Override
     public boolean isSupported() {
         return rawPlugin.isSupported() || dinputPlugin.isSupported();
     }
-
 }

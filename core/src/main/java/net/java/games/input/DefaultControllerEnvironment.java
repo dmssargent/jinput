@@ -63,41 +63,40 @@ class DefaultControllerEnvironment extends ControllerEnvironment {
     private ArrayList<Controller> controllers;
 
 
+//    /**
+//     * Public no-arg constructor.
+//     */
+//    public DefaultControllerEnvironment() {
+//    }
+
+
     /**
-     * Public no-arg constructor.
+     * Static utility method for loading native libraries.
+     * It will try to load from either the path given by
+     * the net.java.games.input.librarypath property
+     * or through System.loadLibrary().
+     *
      */
-    public DefaultControllerEnvironment() {
+    static void loadLibrary(final String lib_name) {
+        AccessController.doPrivileged(
+                (PrivilegedAction<Object>) () -> {
+                    String lib_path = System.getProperty("net.java.games.input.librarypath");
+                    if (lib_path != null)
+                        System.load(lib_path + File.separator + System.mapLibraryName(lib_name));
+                    else
+                        System.loadLibrary(lib_name);
+                    return null;
+                });
     }
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//    /**
-//     * Static utility method for loading native libraries.
-//     * It will try to load from either the path given by
-//     * the net.java.games.input.librarypath property
-//     * or through System.loadLibrary().
-//     *
-//     */
-//    static void loadLibrary(final String lib_name) {
-//        AccessController.doPrivileged(
-//                (PrivilegedAction) () -> {
-//                    String lib_path = System.getProperty("net.java.games.input.librarypath");
-//                    if (lib_path != null)
-//                        System.load(lib_path + File.separator + System.mapLibraryName(lib_name));
-//                    else
-//                        System.loadLibrary(lib_name);
-//                    return null;
-//                });
-//    }
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
 
-    @NotNull
     private static String getPrivilegedProperty(@NotNull final String property) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property));
     }
 
     @NotNull
     private static String getPrivilegedProperty(@NotNull final String property, final String default_value) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property, default_value));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property, default_value));
     }
 
     /**
@@ -109,7 +108,7 @@ class DefaultControllerEnvironment extends ControllerEnvironment {
         if (controllers == null) {
             // Controller list has not been scanned.
             controllers = new ArrayList<>();
-            AccessController.doPrivileged((PrivilegedAction) () -> {
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
                 scanControllers();
                 return null;
             });

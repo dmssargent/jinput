@@ -61,10 +61,11 @@ public final class RawInputEnvironmentPlugin extends ControllerEnvironment imple
         String osName = getPrivilegedProperty("os.name", "").trim();
         if (osName.startsWith("Windows")) {
             supported = true;
+            // TODO: 12/27/2016 Jinput seems to want multiple libraries, but I am building monlithies
             if ("x86".equals(getPrivilegedProperty("os.arch"))) {
-                loadLibrary("jinput-raw");
+                //loadLibrary("jinput-raw");
             } else {
-                loadLibrary("jinput-raw_64");
+                //loadLibrary("jinput-raw_64");
             }
         }
     }
@@ -77,7 +78,7 @@ public final class RawInputEnvironmentPlugin extends ControllerEnvironment imple
      */
     public RawInputEnvironmentPlugin() {
         RawInputEventQueue queue;
-        Controller[] controllers = new Controller[]{};
+        Controller[] controllers = {};
         if (isSupported()) {
             try {
                 queue = new RawInputEventQueue();
@@ -97,7 +98,7 @@ public final class RawInputEnvironmentPlugin extends ControllerEnvironment imple
      */
     private static void loadLibrary(final String lib_name) {
         AccessController.doPrivileged(
-                (PrivilegedAction) () -> {
+                (PrivilegedAction<Object>) () -> {
                     try {
                         String lib_path = System.getProperty("net.java.games.input.librarypath");
                         if (lib_path != null)
@@ -113,11 +114,11 @@ public final class RawInputEnvironmentPlugin extends ControllerEnvironment imple
     }
 
     private static String getPrivilegedProperty(final String property) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property));
     }
 
     private static String getPrivilegedProperty(final String property, final String default_value) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property, default_value));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property, default_value));
     }
 
     private static SetupAPIDevice lookupSetupAPIDevice(String device_name, List setupapi_devices) {
@@ -187,6 +188,7 @@ public final class RawInputEnvironmentPlugin extends ControllerEnvironment imple
 
     private static native byte[] getMouseClassGUID();
 
+    @Override
     public final Controller[] getControllers() {
         return controllers;
     }
@@ -202,6 +204,7 @@ public final class RawInputEnvironmentPlugin extends ControllerEnvironment imple
         return controllers_array;
     }
 
+    @Override
     public boolean isSupported() {
         return supported;
     }

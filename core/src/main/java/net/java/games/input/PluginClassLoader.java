@@ -62,14 +62,12 @@ class PluginClassLoader extends ClassLoader {
      */
     private static String pluginDirectory;
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//    /**
-//     * Create a new class loader for loading plugins
-//     */
-//    public PluginClassLoader() {
-//        super(Thread.currentThread().getContextClassLoader());
-//    }
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+    /**
+     * Create a new class loader for loading plugins
+     */
+    public PluginClassLoader() {
+        super(Thread.currentThread().getContextClassLoader());
+    }
 
     /**
      * Overrides findClass to first look in the parent class loader,

@@ -38,6 +38,7 @@
 package net.java.games.input;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ import java.util.Map;
  * @version 1.0
  */
 final class OSXHIDQueue {
-    private final Map map = new HashMap();
+    private final Map<Long, Component> map = new HashMap<>();
     private final long queue_address;
 
     private boolean released;

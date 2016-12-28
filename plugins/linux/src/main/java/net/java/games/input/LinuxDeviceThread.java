@@ -42,12 +42,11 @@ import java.util.List;
 final class LinuxDeviceThread extends Thread {
     private final List<LinuxDeviceTask> tasks = new ArrayList<>();
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//	public LinuxDeviceThread() {
-//		setDaemon(true);
-//		start();
-//	}
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+	public LinuxDeviceThread() {
+		setDaemon(true);
+		start();
+	}
 
     public synchronized final void run() {
         while (!Thread.currentThread().isInterrupted()) {
@@ -61,18 +60,19 @@ final class LinuxDeviceThread extends Thread {
                 try {
                     wait();
                 } catch (InterruptedException ignored) {
+                    return;
                 }
             }
         }
     }
 
-    public final Object execute(LinuxDeviceTask task) throws IOException {
+    public final <T> T execute(LinuxDeviceTask<T> task) throws IOException {
         synchronized (this) {
             tasks.add(task);
             notify();
         }
         synchronized (task) {
-            while (task.getState() == LinuxDeviceTask.INPROGRESS) {
+            while (task.getState() == LinuxDeviceTask.State.IN_PROGRESS) {
                 try {
                     task.wait();
                 } catch (InterruptedException e) {
@@ -80,10 +80,11 @@ final class LinuxDeviceThread extends Thread {
                 }
             }
         }
+
         switch (task.getState()) {
-            case LinuxDeviceTask.COMPLETED:
+            case COMPLETED:
                 return task.getResult();
-            case LinuxDeviceTask.FAILED:
+            case FAILED:
                 throw task.getException();
             default:
                 throw new RuntimeException("Invalid task state: " + task.getState());

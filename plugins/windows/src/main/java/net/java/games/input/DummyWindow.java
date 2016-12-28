@@ -49,11 +49,9 @@ import java.io.IOException;
 final class DummyWindow {
     private long hwnd_address;
 
-
     public DummyWindow() throws IOException {
         this.hwnd_address = createWindow();
     }
-
 
     private static native long createWindow() throws IOException;
 

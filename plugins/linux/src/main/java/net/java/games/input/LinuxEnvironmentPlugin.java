@@ -25,7 +25,13 @@
  */
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.Component.Identifier.Button;
+import net.java.games.input.Controller.Type;
 import net.java.games.util.plugins.Plugin;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -34,6 +40,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /** Environment plugin for linux
@@ -66,7 +73,7 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
             this.controllers = enumerateControllers();
             logln("Linux plugin claims to have found " + controllers.length + " controllers");
             AccessController.doPrivileged(
-                    (PrivilegedAction) () -> {
+                    (PrivilegedAction<Object>) () -> {
                         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
                         return null;
                     });
@@ -84,7 +91,7 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
      */
     private static void loadLibrary(final String lib_name) {
         AccessController.doPrivileged(
-                (PrivilegedAction) () -> {
+                (PrivilegedAction<Object>) () -> {
                     String lib_path = System.getProperty("net.java.games.input.librarypath");
                     try {
                         if (lib_path != null)
@@ -101,14 +108,14 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
     }
 
     private static String getPrivilegedProperty(final String property) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property));
     }
 
     private static String getPrivilegedProperty(final String property, final String default_value) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property, default_value));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property, default_value));
     }
 
-    public static Object execute(LinuxDeviceTask task) throws IOException {
+    public static <T> T execute(LinuxDeviceTask<T> task) throws IOException {
         return device_thread.execute(task);
     }
 
@@ -117,9 +124,9 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
         List<LinuxComponent> components = new ArrayList<>();
         for (Object event_component1 : event_components) {
             LinuxEventComponent event_component = (LinuxEventComponent) event_component1;
-            Component.Identifier identifier = event_component.getIdentifier();
+            Identifier identifier = event_component.getIdentifier();
 
-            if (identifier == Component.Identifier.Axis.POV) {
+            if (identifier == Axis.POV) {
                 int native_code = event_component.getDescriptor().getCode();
                 switch (native_code) {
                     case NativeDefinitions.ABS_HAT0X:
@@ -183,91 +190,93 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
         return new LinuxKeyboard(device, components, new Controller[]{}, device.getRumblers());
     }
 
-    private static Controller createJoystickFromDevice(LinuxEventDevice device, Component[] components, Controller.Type type) throws IOException {
+    private static Controller createJoystickFromDevice(LinuxEventDevice device, Component[] components, Type type) throws IOException {
         return new LinuxAbstractController(device, components, new Controller[]{}, device.getRumblers(), type);
     }
 
     private static Controller createControllerFromDevice(LinuxEventDevice device) throws IOException {
         List event_components = device.getComponents();
         Component[] components = createComponents(event_components, device);
-        Controller.Type type = device.getType();
+        Type type = device.getType();
 
-        if (type == Controller.Type.MOUSE) {
+        if (type == Type.MOUSE) {
             return createMouseFromDevice(device, components);
-        } else if (type == Controller.Type.KEYBOARD) {
+        } else if (type == Type.KEYBOARD) {
             return createKeyboardFromDevice(device, components);
-        } else if (type == Controller.Type.STICK || type == Controller.Type.GAMEPAD) {
+        } else if (type == Type.STICK || type == Type.GAMEPAD) {
             return createJoystickFromDevice(device, components, type);
         } else
             return null;
     }
 
-    private static Component.Identifier.Button getButtonIdentifier(int index) {
+    @Nullable
+    @Contract(pure = true)
+    private static Button getButtonIdentifier(int index) {
         switch (index) {
             case 0:
-                return Component.Identifier.Button._0;
+                return Button._0;
             case 1:
-                return Component.Identifier.Button._1;
+                return Button._1;
             case 2:
-                return Component.Identifier.Button._2;
+                return Button._2;
             case 3:
-                return Component.Identifier.Button._3;
+                return Button._3;
             case 4:
-                return Component.Identifier.Button._4;
+                return Button._4;
             case 5:
-                return Component.Identifier.Button._5;
+                return Button._5;
             case 6:
-                return Component.Identifier.Button._6;
+                return Button._6;
             case 7:
-                return Component.Identifier.Button._7;
+                return Button._7;
             case 8:
-                return Component.Identifier.Button._8;
+                return Button._8;
             case 9:
-                return Component.Identifier.Button._9;
+                return Button._9;
             case 10:
-                return Component.Identifier.Button._10;
+                return Button._10;
             case 11:
-                return Component.Identifier.Button._11;
+                return Button._11;
             case 12:
-                return Component.Identifier.Button._12;
+                return Button._12;
             case 13:
-                return Component.Identifier.Button._13;
+                return Button._13;
             case 14:
-                return Component.Identifier.Button._14;
+                return Button._14;
             case 15:
-                return Component.Identifier.Button._15;
+                return Button._15;
             case 16:
-                return Component.Identifier.Button._16;
+                return Button._16;
             case 17:
-                return Component.Identifier.Button._17;
+                return Button._17;
             case 18:
-                return Component.Identifier.Button._18;
+                return Button._18;
             case 19:
-                return Component.Identifier.Button._19;
+                return Button._19;
             case 20:
-                return Component.Identifier.Button._20;
+                return Button._20;
             case 21:
-                return Component.Identifier.Button._21;
+                return Button._21;
             case 22:
-                return Component.Identifier.Button._22;
+                return Button._22;
             case 23:
-                return Component.Identifier.Button._23;
+                return Button._23;
             case 24:
-                return Component.Identifier.Button._24;
+                return Button._24;
             case 25:
-                return Component.Identifier.Button._25;
+                return Button._25;
             case 26:
-                return Component.Identifier.Button._26;
+                return Button._26;
             case 27:
-                return Component.Identifier.Button._27;
+                return Button._27;
             case 28:
-                return Component.Identifier.Button._28;
+                return Button._28;
             case 29:
-                return Component.Identifier.Button._29;
+                return Button._29;
             case 30:
-                return Component.Identifier.Button._30;
+                return Button._30;
             case 31:
-                return Component.Identifier.Button._31;
+                return Button._31;
             default:
                 return null;
         }
@@ -280,7 +289,7 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
         LinuxJoystickAxis[] hatBits = new LinuxJoystickAxis[6];
 
         for (int i = 0; i < device.getNumButtons(); i++) {
-            Component.Identifier button_id = LinuxNativeTypesMap.getButtonID(buttonMap[i]);
+            Identifier button_id = LinuxNativeTypesMap.getButtonID(buttonMap[i]);
             if (button_id != null) {
                 LinuxJoystickButton button = new LinuxJoystickButton(button_id);
                 device.registerButton(i, button);
@@ -288,8 +297,8 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
             }
         }
         for (int i = 0; i < device.getNumAxes(); i++) {
-            Component.Identifier.Axis axis_id;
-            axis_id = (Component.Identifier.Axis) LinuxNativeTypesMap.getAbsAxisID(axisMap[i]);
+            Axis axis_id;
+            axis_id = (Axis) LinuxNativeTypesMap.getAbsAxisID(axisMap[i]);
             LinuxJoystickAxis axis = new LinuxJoystickAxis(axis_id);
 
             device.registerAxis(i, axis);
@@ -298,21 +307,21 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
                 hatBits[0] = axis;
             } else if (axisMap[i] == NativeDefinitions.ABS_HAT0Y) {
                 hatBits[1] = axis;
-                axis = new LinuxJoystickPOV(Component.Identifier.Axis.POV, hatBits[0], hatBits[1]);
+                axis = new LinuxJoystickPOV(Axis.POV, hatBits[0], hatBits[1]);
                 device.registerPOV((LinuxJoystickPOV) axis);
                 components.add(axis);
             } else if (axisMap[i] == NativeDefinitions.ABS_HAT1X) {
                 hatBits[2] = axis;
             } else if (axisMap[i] == NativeDefinitions.ABS_HAT1Y) {
                 hatBits[3] = axis;
-                axis = new LinuxJoystickPOV(Component.Identifier.Axis.POV, hatBits[2], hatBits[3]);
+                axis = new LinuxJoystickPOV(Axis.POV, hatBits[2], hatBits[3]);
                 device.registerPOV((LinuxJoystickPOV) axis);
                 components.add(axis);
             } else if (axisMap[i] == NativeDefinitions.ABS_HAT2X) {
                 hatBits[4] = axis;
             } else if (axisMap[i] == NativeDefinitions.ABS_HAT2Y) {
                 hatBits[5] = axis;
-                axis = new LinuxJoystickPOV(Component.Identifier.Axis.POV, hatBits[4], hatBits[5]);
+                axis = new LinuxJoystickPOV(Axis.POV, hatBits[4], hatBits[5]);
                 device.registerPOV((LinuxJoystickPOV) axis);
                 components.add(axis);
             } else {
@@ -329,13 +338,15 @@ public final class LinuxEnvironmentPlugin extends ControllerEnvironment implemen
     }
 
     private static String getAbsolutePathPrivileged(final File file) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) file::getAbsolutePath);
+        return AccessController.doPrivileged((PrivilegedAction<String>) file::getAbsolutePath);
     }
 
     private static File[] listFilesPrivileged(final File dir, final FilenameFilter filter) {
-        return (File[]) AccessController.doPrivileged((PrivilegedAction) () -> {
+        return AccessController.doPrivileged((PrivilegedAction<File[]>) () -> {
             File[] files = dir.listFiles(filter);
-            Arrays.sort(files, (f1, f2) -> (f1).getName().compareTo((f2).getName()));
+            if (files != null) {
+                Arrays.sort(files, Comparator.comparing(f -> (f).getName()));
+            }
             return files;
         });
     }

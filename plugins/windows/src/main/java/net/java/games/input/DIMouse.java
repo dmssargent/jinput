@@ -46,23 +46,23 @@ import java.io.IOException;
 final class DIMouse extends Mouse {
     private final IDirectInputDevice device;
 
-
     DIMouse(IDirectInputDevice device, Component[] components, Controller[] children, Rumbler[] rumblers) {
         super(device.getProductName(), components, children, rumblers);
         this.device = device;
     }
 
-
+    @Override
     public final void pollDevice() throws IOException {
         device.pollAll();
     }
 
+    @Override
     protected final boolean getNextDeviceEvent(Event event) throws IOException {
         return DIControllers.getNextDeviceEvent(event, device);
     }
 
+    @Override
     protected final void setDeviceEventQueueSize(int size) throws IOException {
         device.setBufferSize(size);
     }
-
 }

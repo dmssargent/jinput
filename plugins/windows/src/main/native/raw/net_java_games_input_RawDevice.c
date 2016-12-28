@@ -5,7 +5,7 @@
  * SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-#include "rawwinver.h"
+//#include "rawwinver.h"
 #include <windows.h>
 #include <winuser.h>
 #include <jni.h>

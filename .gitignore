@@ -12,3 +12,5 @@ eclipse_bin/
 .idea/
 out/
 *.iml
+*.dll
+*.b

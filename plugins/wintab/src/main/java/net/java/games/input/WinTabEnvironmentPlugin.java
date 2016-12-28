@@ -44,11 +44,9 @@ public class WinTabEnvironmentPlugin extends ControllerEnvironment implements Pl
         }
     }
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//	static String getPrivilegedProperty(final String property) {
-//	       return (String)AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property));
-//		}
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+	static String getPrivilegedProperty(final String property) {
+	       return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property));
+    }
 
     private final Controller[] controllers;
     private final List active_devices = new ArrayList();
@@ -59,7 +57,7 @@ public class WinTabEnvironmentPlugin extends ControllerEnvironment implements Pl
         if (isSupported()) {
             DummyWindow window = null;
             WinTabContext winTabContext = null;
-            Controller[] controllers = new Controller[]{};
+            Controller[] controllers = {};
             try {
                 window = new DummyWindow();
                 winTabContext = new WinTabContext(window);
@@ -77,8 +75,8 @@ public class WinTabEnvironmentPlugin extends ControllerEnvironment implements Pl
             this.controllers = controllers;
             this.winTabContext = winTabContext;
             AccessController.doPrivileged(
-                    (PrivilegedAction) () -> {
-                        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+                    (PrivilegedAction<Object>) () -> {
+                        Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook()));
                         return null;
                     });
         } else {
@@ -96,7 +94,7 @@ public class WinTabEnvironmentPlugin extends ControllerEnvironment implements Pl
      */
     private static void loadLibrary(final String lib_name) {
         AccessController.doPrivileged(
-                (PrivilegedAction) () -> {
+                (PrivilegedAction<Object>) () -> {
                     try {
                         String lib_path = System.getProperty("net.java.games.input.librarypath");
                         if (lib_path != null)
@@ -112,19 +110,21 @@ public class WinTabEnvironmentPlugin extends ControllerEnvironment implements Pl
     }
 
     private static String getPrivilegedProperty(final String property, final String default_value) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property, default_value));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property, default_value));
     }
 
+    @Override
     public boolean isSupported() {
         return supported;
     }
 
+    @Override
     public Controller[] getControllers() {
         return controllers;
     }
 
-
-    private final class ShutdownHook extends Thread {
+    private final class ShutdownHook implements Runnable {
+        @Override
         public final void run() {
             /* Release the devices to kill off active force feedback effects */
             for (int i = 0; i < active_devices.size(); i++) {

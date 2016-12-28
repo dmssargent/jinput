@@ -37,6 +37,8 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -56,7 +58,6 @@ final class RawKeyboard extends Keyboard {
         this.device = device;
     }
 
-
     private static Component[] createKeyboardComponents(RawDevice device) {
         List<Key> components = new ArrayList<>();
         Field[] vkey_fields = RawIdentifierMap.class.getFields();
@@ -64,8 +65,8 @@ final class RawKeyboard extends Keyboard {
             try {
                 if (Modifier.isStatic(vkey_field.getModifiers()) && vkey_field.getType() == int.class) {
                     int vkey_code = vkey_field.getInt(null);
-                    Component.Identifier.Key key_id = RawIdentifierMap.mapVKey(vkey_code);
-                    if (key_id != Component.Identifier.Key.UNKNOWN)
+                    Identifier.Key key_id = RawIdentifierMap.mapVKey(vkey_code);
+                    if (key_id != Identifier.Key.UNKNOWN)
                         components.add(new Key(device, vkey_code, key_id));
                 }
             } catch (IllegalAccessException e) {
@@ -75,12 +76,13 @@ final class RawKeyboard extends Keyboard {
         return components.toArray(new Component[components.size()]);
     }
 
+    @Override
     protected final synchronized boolean getNextDeviceEvent(Event event) throws IOException {
         while (true) {
             if (!device.getNextKeyboardEvent(raw_event))
                 return false;
             int vkey = raw_event.getVKey();
-            Component.Identifier.Key key_id = RawIdentifierMap.mapVKey(vkey);
+            Identifier.Key key_id = RawIdentifierMap.mapVKey(vkey);
             Component key = getComponent(key_id);
             if (key == null) {
                 continue;
@@ -96,10 +98,12 @@ final class RawKeyboard extends Keyboard {
         }
     }
 
+    @Override
     public final void pollDevice() throws IOException {
         device.pollKeyboard();
     }
 
+    @Override
     protected final void setDeviceEventQueueSize(int size) throws IOException {
         device.setBufferSize(size);
     }
@@ -114,14 +118,17 @@ final class RawKeyboard extends Keyboard {
             this.vkey_code = vkey_code;
         }
 
+        @Override
         protected final float poll() throws IOException {
             return device.isKeyDown(vkey_code) ? 1f : 0f;
         }
 
+        @Override
         public final boolean isAnalog() {
             return false;
         }
 
+        @Override
         public final boolean isRelative() {
             return false;
         }

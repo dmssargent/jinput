@@ -50,17 +50,13 @@ final class DIEffectInfo {
     private final int dynamic_params;
     private final String name;
 
-
     public DIEffectInfo(IDirectInputDevice device, byte[] guid, int guid_id, int effect_type, int static_params, int dynamic_params, String name) {
-        IDirectInputDevice device1 = device;
         this.guid = guid;
         this.guid_id = guid_id;
         this.effect_type = effect_type;
-        int static_params1 = static_params;
         this.dynamic_params = dynamic_params;
         this.name = name;
     }
-
 
     public final byte[] getGUID() {
         return guid;

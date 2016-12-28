@@ -37,6 +37,8 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+
 /**
  * A Controller represents a physical device, such as a keyboard, mouse,
  * or joystick, or a logical grouping of related controls, such as a button
@@ -70,13 +72,13 @@ public interface Controller {
      */
     Component[] getComponents();
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//    /**
-//     * Returns a single axis based on its type, or null
-//     * if no axis with the specified type could be found.
-//     */
-//    Component getComponent(Component.Identifier id);
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+    /**
+     * Returns a single axis based on its type, or null
+     * if no axis with the specified type could be found.
+     */
+    Component getComponent(Identifier id);
+
 
     /**
      * Returns the rumblers for sending feedback to this controller, or an
@@ -90,32 +92,32 @@ public interface Controller {
      */
     boolean poll();
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//    /**
-//     * Initialized the controller event queue to a new size. Existing events
-//     * in the queue are lost.
-//     */
-//    void setEventQueueSize(int size);
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+    /**
+     * Initialized the controller event queue to a new size. Existing events
+     * in the queue are lost.
+     */
+    void setEventQueueSize(int size);
+
 
     /**
      * Get the device event queue
      */
     EventQueue getEventQueue();
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//    /**
-//     * Returns the port type for this Controller.
-//     */
-//    PortType getPortType();
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
 
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//    /**
-//     * Returns the zero-based port number for this Controller.
-//     */
-//    int getPortNumber();
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+    /**
+     * Returns the port type for this Controller.
+     */
+    PortType getPortType();
+
+
+
+    /**
+     * Returns the zero-based port number for this Controller.
+     */
+    int getPortNumber();
+
 
     /**
      * Returns a human-readable name for this Controller.
@@ -139,40 +141,39 @@ public interface Controller {
          * A keyboard controller
          */
         public static final Type KEYBOARD = new Type("Keyboard");
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//        /**
-//         * Fingerstick controller; note that this may be sometimes treated as a
-//         * type of mouse or stick.
-//         */
-//        public static final Type FINGERSTICK = new Type("Fingerstick");
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+        /**
+         * Fingerstick controller; note that this may be sometimes treated as a
+         * type of mouse or stick.
+         */
+        public static final Type FINGERSTICK = new Type("Fingerstick");
+
         /**
          * Gamepad controller.
          */
         public static final Type GAMEPAD = new Type("Gamepad");
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//        /**
-//         * Headtracker controller.
-//         */
-//        public static final Type HEADTRACKER = new Type("Headtracker");
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//        /**
-//         * Rudder controller.
-//         */
-//        public static final Type RUDDER = new Type("Rudder");
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+        /**
+         * Headtracker controller.
+         */
+        public static final Type HEADTRACKER = new Type("Headtracker");
+
+        /**
+         * Rudder controller.
+         */
+        public static final Type RUDDER = new Type("Rudder");
+
         /**
          * Stick controller, such as a joystick or flightstick.
          */
         public static final Type STICK = new Type("Stick");
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//        /**
-//         * A trackball controller; note that this may sometimes be treated as a
-//         * type of mouse.
-//         */
-//        public static final Type TRACKBALL = new Type("Trackball");
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+        /**
+         * A trackball controller; note that this may sometimes be treated as a
+         * type of mouse.
+         */
+        public static final Type TRACKBALL = new Type("Trackball");
+
         /**
          * A trackpad, such as a tablet, touchpad, or glidepad;
          * note that this may sometimes be treated as a type of mouse.
@@ -223,12 +224,12 @@ public interface Controller {
          * Standard game port
          */
         public static final PortType GAME = new PortType("Game port");
-// --Commented out by Inspection START (11/29/2015 12:48 AM):
-//        /**
-//         * Network port
-//         */
-//        public static final PortType NETWORK = new PortType("Network port");
-// --Commented out by Inspection STOP (11/29/2015 12:48 AM)
+
+        /**
+         * Network port
+         */
+        public static final PortType NETWORK = new PortType("Network port");
+
         /**
          * Serial port
          */

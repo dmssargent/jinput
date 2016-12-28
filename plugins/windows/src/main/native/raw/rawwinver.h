@@ -7,8 +7,8 @@
 
 #ifndef RAWWINVER_H
 #define RAWWINVER_H
-
-#define _WIN32_WINNT 0x0501
-#define WINVER 0x0501
+#error You should not use rawwinver.h
+//#define _WIN32_WINNT 0x0501
+//#define WINVER 0x0501
 
 #endif

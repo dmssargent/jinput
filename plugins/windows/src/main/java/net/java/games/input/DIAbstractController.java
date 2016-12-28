@@ -47,13 +47,11 @@ final class DIAbstractController extends AbstractController {
     private final IDirectInputDevice device;
     private final Type type;
 
-
     DIAbstractController(IDirectInputDevice device, Component[] components, Controller[] children, Rumbler[] rumblers, Type type) {
         super(device.getProductName(), components, children, rumblers);
         this.device = device;
         this.type = type;
     }
-
 
     public final void pollDevice() throws IOException {
         device.pollAll();

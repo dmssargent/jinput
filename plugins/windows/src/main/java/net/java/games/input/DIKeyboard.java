@@ -46,21 +46,22 @@ import java.io.IOException;
 final class DIKeyboard extends Keyboard {
     private final IDirectInputDevice device;
 
-
     DIKeyboard(IDirectInputDevice device, Component[] components, Controller[] children, Rumbler[] rumblers) {
         super(device.getProductName(), components, children, rumblers);
         this.device = device;
     }
 
-
+    @Override
     protected final boolean getNextDeviceEvent(Event event) throws IOException {
         return DIControllers.getNextDeviceEvent(event, device);
     }
 
+    @Override
     public final void pollDevice() throws IOException {
         device.pollAll();
     }
 
+    @Override
     protected final void setDeviceEventQueueSize(int size) throws IOException {
         device.setBufferSize(size);
     }

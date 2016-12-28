@@ -25,39 +25,47 @@
  */
 package net.java.games.input;
 
+import org.jetbrains.annotations.Contract;
+
 import java.io.IOException;
 
-
-abstract class LinuxDeviceTask {
-    public final static int INPROGRESS = 1;
+abstract class LinuxDeviceTask<T> {
+    public final static int IN_PROGRESS = 1;
     public final static int COMPLETED = 2;
     public final static int FAILED = 3;
 
-    private Object result;
+    public enum State {
+        IN_PROGRESS, COMPLETED, FAILED
+    }
+
+    private T result;
     private IOException exception;
-    private int state = INPROGRESS;
+    private State state = State.IN_PROGRESS;
 
     public final void doExecute() {
         try {
             result = execute();
-            state = COMPLETED;
+            state = State.COMPLETED;
         } catch (IOException e) {
             exception = e;
-            state = FAILED;
+            state = State.FAILED;
         }
     }
 
+    @Contract(pure = true)
     public final IOException getException() {
         return exception;
     }
 
-    public final Object getResult() {
+    @Contract(pure = true)
+    public final T getResult() {
         return result;
     }
 
-    public final int getState() {
+    @Contract(pure = true)
+    public final State getState() {
         return state;
     }
 
-    protected abstract Object execute() throws IOException;
+    protected abstract T execute() throws IOException;
 }

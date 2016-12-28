@@ -4,16 +4,28 @@ version '1.0.0'
 apply plugin: 'java'
 apply plugin: 'c'
 
-
-
 model {
+    platforms {
+        x86 {
+            architecture "x86"
+        }
+        x64 {
+            architecture "x64"
+        }
+        itanium {
+            architecture "ia-64"
+        }
+    }
+
     components {
         libjinput_windows(NativeLibrarySpec) {
+            targetPlatform "x86"
+            targetPlatform "x64"
+
             sources {
                 c.source.srcDirs 'src/main/native'
                 c.source.include '**/*.c'
-                
-
+                c.lib project: ":plugins:common", library: 'libjinput_common', linkage: 'static'
             }
 
             binaries {
@@ -22,9 +34,14 @@ model {
                     def javaInclude = "-I${System.properties.'java.home'}${File.separator}..${File.separator}include"
                     cCompiler.args javaInclude
                     cCompiler.args "${javaInclude}${File.separator}win32"
-                    String generated = "-I${buildDir}${File.separator}generated${File.separator}includes".replaceAll('\\\\', "\\\\")
+                    String generated = "-I${buildDir}${File.separator}generated${File.separator}includes"
                     cCompiler.args generated
-                    println cCompiler.args
+                    linker.args "/LIBPATH:${System.properties.'java.home'}${File.separator}..${File.separator}lib"
+                    //println cCompiler.args
+                    linker.args "User32.lib"
+                    linker.args "SetupApi.lib"
+                    linker.args "dxguid.lib"
+                    linker.args "dinput8.lib"
                 }
             }
         }
@@ -32,19 +49,28 @@ model {
 }
 
 task javah {
+    String[] files = ["DummyWindow", "IDirectInputEffect", "IDirectInput", "IDirectInputDevice",
+                      "RawInputEnvironmentPlugin", "RawInputEventQueue", "RawDevice"]
     inputs.file sourceSets.main.output.asFileTree.matching {
-       include "DummyWindow"
+       for (String file : files) {
+           include file
+       }
     }
 
     outputs.file "${buildDir}/generated/includes/net_java_games_input_DummyWindow.h"
     doLast {
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_DummyWindow.h", classpath: "${buildDir}/classes/main")
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInputEffect.h", classpath: "${buildDir}/classes/main")
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInput.h", classpath: "${buildDir}/classes/main")
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInputDevice.h", classpath: "${buildDir}/classes/main")
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawInputEnvironmentPlugin.h", classpath: "${buildDir}/classes/main")
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawInputEventQueue.h", classpath: "${buildDir}/classes/main")
-        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawDevice.h", classpath: "${buildDir}/classes/main")
+        String[] files2 = ["DummyWindow", "IDirectInputEffect", "IDirectInput", "IDirectInputDevice", "RawInputEnvironmentPlugin", "RawInputEventQueue", "RawDevice"]
+        for (String file : files2) {
+            println file
+            ant.javah(class: "net.java.games.input.${file}", outputFile: "${buildDir}/generated/includes/net_java_games_input_${file}.h", classpath: "${buildDir}/classes/main${File.pathSeparator}${project(':core').buildDir}/classes/main")
+        }
+//        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_DummyWindow.h", classpath: "${buildDir}/classes/main")
+//        ant.javah(class: "net.java.games.input.IDirectInputEffect", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInputEffect.h", classpath: "${buildDir}/classes/main")
+//        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInput.h", classpath: "${buildDir}/classes/main")
+//        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_IDirectInputDevice.h", classpath: "${buildDir}/classes/main")
+//        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawInputEnvironmentPlugin.h", classpath: "${buildDir}/classes/main")
+//        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawInputEventQueue.h", classpath: "${buildDir}/classes/main")
+//        ant.javah(class: "net.java.games.input.DummyWindow", outputFile: "${buildDir}/generated/includes/net_java_games_input_RawDevice.h", classpath: "${buildDir}/classes/main")
     }
 }
 

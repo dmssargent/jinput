@@ -37,6 +37,8 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import org.jetbrains.annotations.Contract;
+
 import java.io.IOException;
 
 /** Represents a Linux controller
@@ -55,18 +57,23 @@ final class LinuxAbstractController extends AbstractController {
         this.type = type;
     }
 
+    @Contract(pure = true)
+    @Override
     public final PortType getPortType() {
         return port;
     }
 
+    @Override
     public final void pollDevice() throws IOException {
         device.pollKeyStates();
     }
 
+    @Override
     protected final boolean getNextDeviceEvent(Event event) throws IOException {
         return LinuxControllers.getNextDeviceEvent(event, device);
     }
 
+    @Override
     public Type getType() {
         return type;
     }

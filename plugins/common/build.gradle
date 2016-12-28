@@ -5,8 +5,23 @@ apply plugin: 'java'
 apply plugin: 'c'
 
 model {
+    platforms {
+        x86 {
+            architecture "x86"
+        }
+        x64 {
+            architecture "x64"
+        }
+        itanium {
+            architecture "ia-64"
+        }
+    }
+
     components {
         libjinput_common(NativeLibrarySpec) {
+            targetPlatform "x86"
+            targetPlatform "x64"
+
             sources {
                 c.source.srcDirs 'src/main/native'
             }

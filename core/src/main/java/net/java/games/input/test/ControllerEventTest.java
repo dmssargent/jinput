@@ -33,6 +33,8 @@ package net.java.games.input.test;
 
 import net.java.games.input.Component;
 import net.java.games.input.*;
+import net.java.games.input.Component.Identifier.Axis;
+import net.java.games.input.Component.POV;
 import net.java.games.input.Event;
 import net.java.games.input.EventQueue;
 import org.jetbrains.annotations.NotNull;
@@ -56,23 +58,20 @@ public class ControllerEventTest extends JFrame {
             makeController(aCa);
         }
 
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    while (!Thread.currentThread().isInterrupted()) {
-                        for (Object controller : controllers) {
-                            try {
-                                ControllerWindow cw = (ControllerWindow) controller;
-                                cw.poll();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+        new Thread(() -> {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    for (ControllerWindow controller : controllers) {
+                        try {
+                            controller.poll();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        Thread.sleep(HEARTBEAT_MS);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    Thread.sleep(HEARTBEAT_MS);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }).start();
         pack();
@@ -160,34 +159,34 @@ public class ControllerEventTest extends JFrame {
         }
 
         protected void renderData() {
-            if (data == Component.POV.OFF) {
+            if (data == POV.OFF) {
                 digitalState.setBackground(getBackground());
                 digitalState.setText("OFF");
-            } else if (data == Component.POV.UP) {
+            } else if (data == POV.UP) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("UP");
-            } else if (data == Component.POV.UP_RIGHT) {
+            } else if (data == POV.UP_RIGHT) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("UP+RIGHT");
-            } else if (data == Component.POV.RIGHT) {
+            } else if (data == POV.RIGHT) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("RIGHT");
-            } else if (data == Component.POV.DOWN_RIGHT) {
+            } else if (data == POV.DOWN_RIGHT) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("DOWN+RIGHT");
-            } else if (data == Component.POV.DOWN) {
+            } else if (data == POV.DOWN) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("DOWN");
-            } else if (data == Component.POV.DOWN_LEFT) {
+            } else if (data == POV.DOWN_LEFT) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("DOWN+LEFT");
-            } else if (data == Component.POV.LEFT) {
+            } else if (data == POV.LEFT) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("LEFT");
-            } else if (data == Component.POV.UP_LEFT) {
+            } else if (data == POV.UP_LEFT) {
                 digitalState.setBackground(Color.green);
                 digitalState.setText("UP+LEFT");
-            } else { // shoudl never happen
+            } else { // should never happen
                 digitalState.setBackground(Color.red);
                 digitalState.setText("ERR:" + data);
             }
@@ -262,7 +261,7 @@ public class ControllerEventTest extends JFrame {
             if (ax.isAnalog()) {
                 p2 = new AnalogAxisPanel(ax);
             } else {
-                if (ax.getIdentifier() == Component.Identifier.Axis.POV) {
+                if (ax.getIdentifier() == Axis.POV) {
                     p2 = new DigitalHatPanel(ax);
                 } else {
                     p2 = new DigitalAxisPanel(ax);

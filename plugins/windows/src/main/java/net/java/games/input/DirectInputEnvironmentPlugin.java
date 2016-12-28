@@ -37,6 +37,9 @@
  *****************************************************************************/
 package net.java.games.input;
 
+import net.java.games.input.Component.Identifier;
+import net.java.games.input.Component.Identifier.Button;
+import net.java.games.input.Controller.Type;
 import net.java.games.util.plugins.Plugin;
 
 import java.io.File;
@@ -61,6 +64,8 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
         String osName = getPrivilegedProperty("os.name", "").trim();
         if (osName.startsWith("Windows")) {
             supported = true;
+            System.out.println(getPrivilegedProperty("user.dir"));
+            System.out.println(getPrivilegedProperty("java.library.path", "Unknown"));
             if ("x86".equals(getPrivilegedProperty("os.arch"))) {
                 loadLibrary("jinput-dx8");
             } else {
@@ -77,7 +82,7 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
      */
     public DirectInputEnvironmentPlugin() {
         DummyWindow window = null;
-        Controller[] controllers = new Controller[]{};
+        Controller[] controllers = {};
         DummyWindow window1;
         if (isSupported()) {
             try {
@@ -94,7 +99,7 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
             window1 = window;
             this.controllers = controllers;
             AccessController.doPrivileged(
-                    (PrivilegedAction) () -> {
+                    (PrivilegedAction<Object>) () -> {
                         Runtime.getRuntime().addShutdownHook(new ShutdownHook());
                         return null;
                     });
@@ -114,7 +119,7 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
      */
     private static void loadLibrary(final String lib_name) {
         AccessController.doPrivileged(
-                (PrivilegedAction) () -> {
+                (PrivilegedAction<Object>) () -> {
                     try {
                         String lib_path = System.getProperty("net.java.games.input.librarypath");
                         if (lib_path != null)
@@ -130,11 +135,11 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
     }
 
     private static String getPrivilegedProperty(final String property) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property));
     }
 
     private static String getPrivilegedProperty(final String property, final String default_value) {
-        return (String) AccessController.doPrivileged((PrivilegedAction) () -> System.getProperty(property, default_value));
+        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property, default_value));
     }
 
     public final Controller[] getControllers() {
@@ -146,11 +151,11 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
         List<DIComponent> controller_components = new ArrayList<>();
         for (Object device_object1 : device_objects) {
             DIDeviceObject device_object = (DIDeviceObject) device_object1;
-            Component.Identifier identifier = device_object.getIdentifier();
+            Identifier identifier = device_object.getIdentifier();
             if (identifier == null)
                 continue;
-            if (map_mouse_buttons && identifier instanceof Component.Identifier.Button) {
-                identifier = DIIdentifierMap.mapMouseButtonIdentifier((Component.Identifier.Button) identifier);
+            if (map_mouse_buttons && identifier instanceof Button) {
+                identifier = DIIdentifierMap.mapMouseButtonIdentifier((Button) identifier);
             }
             DIComponent component = new DIComponent(identifier, device_object);
             controller_components.add(component);
@@ -170,7 +175,7 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
             return null;
     }
 
-    private AbstractController createControllerFromDevice(IDirectInputDevice device, Controller.Type type) {
+    private AbstractController createControllerFromDevice(IDirectInputDevice device, Type type) {
         Component[] components = createComponents(device, false);
         return new DIAbstractController(device, components, new Controller[]{}, device.getRumblers(), type);
     }
@@ -187,17 +192,17 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
             case IDirectInputDevice.DI8DEVTYPE_KEYBOARD:
                 return createKeyboardFromDevice(device);
             case IDirectInputDevice.DI8DEVTYPE_GAMEPAD:
-                return createControllerFromDevice(device, Controller.Type.GAMEPAD);
+                return createControllerFromDevice(device, Type.GAMEPAD);
             case IDirectInputDevice.DI8DEVTYPE_DRIVING:
-                return createControllerFromDevice(device, Controller.Type.WHEEL);
+                return createControllerFromDevice(device, Type.WHEEL);
             case IDirectInputDevice.DI8DEVTYPE_1STPERSON:
                 /* Fall through */
             case IDirectInputDevice.DI8DEVTYPE_FLIGHT:
                 /* Fall through */
             case IDirectInputDevice.DI8DEVTYPE_JOYSTICK:
-                return createControllerFromDevice(device, Controller.Type.STICK);
+                return createControllerFromDevice(device, Type.STICK);
             default:
-                return createControllerFromDevice(device, Controller.Type.UNKNOWN);
+                return createControllerFromDevice(device, Type.UNKNOWN);
         }
     }
 
@@ -226,7 +231,6 @@ public final class DirectInputEnvironmentPlugin extends ControllerEnvironment im
     public boolean isSupported() {
         return supported;
     }
-
 
     private final class ShutdownHook extends Thread {
         public final void run() {
